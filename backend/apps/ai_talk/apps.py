@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class AiTalkConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'ai_talk'
+    name = 'apps.ai_talk'
