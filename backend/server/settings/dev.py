@@ -8,7 +8,7 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'server/service_db.sqlite3',
+        'NAME': BASE_DIR / 'service_db.sqlite3',
     }
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',
