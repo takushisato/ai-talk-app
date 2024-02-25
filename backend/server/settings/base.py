@@ -48,24 +48,12 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'corsheaders',
-    # 'django_filters',
-    # 'django_extensions',
-    # 'drf_spectacular',
-    # 'django_cleanup',
-    # 'import_export',
-    # 'solo',
-    # 'cloudinary',
-    # 'cloudinary_storage',
-    # 'axes',
 ]
 
 LOCAL_APPS = [
-    # 'apps.proofreading',
     'apps.account',
     'apps.setting',
-    # 'apps.mail',
     'apps.ai_talk',
-    # 'apps.custom_authtoken'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -85,13 +73,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    # AxesMiddleware should be the last middleware in the MIDDLEWARE list.
-    # It only formats user lockout messages and renders Axes lockout responses
-    # on failed user authentication attempts from login views.
-    # If you do not want Axes to override the authentication response
-    # you can skip installing the middleware and use your own views.
-    # 'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'server.urls'
@@ -113,16 +94,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'server.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -188,7 +159,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 AUTHENTICATION_BACKENDS = [
     # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
-    'axes.backends.AxesBackend',
+    # 'axes.backends.AxesBackend',
     # Django ModelBackend is the default authentication backend.
     'django.contrib.auth.backends.ModelBackend',
 ]
