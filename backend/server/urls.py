@@ -4,6 +4,11 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/', include('rest_framework.urls')),
+    path('api/v1/auth/', include('djoser.urls.authtoken')),
+    path('api/v1/auth/', include('djoser.urls')),
+    path('ai-talk/', include('apps.ai_talk.urls')),
+    path('api-token-auth/', include('apps.custom_authtoken.urls')),
 ]
 
 if settings.DEBUG:
