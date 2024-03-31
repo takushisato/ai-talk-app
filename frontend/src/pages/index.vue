@@ -1,4 +1,9 @@
+<script lang="ts">
+export default {
+  name: "top",
+};
+</script>
+<script setup lang="ts"></script>
 <template>
-  <h1>hoge</h1>
-  <v-btn variant="plain"> ログイン</v-btn>
+  <h1>トップページ</h1>
 </template>
