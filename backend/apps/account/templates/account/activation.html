@@ -1,0 +1,17 @@
+<!-- prettier-ignore -->
+
+{% block subject %}
+farmee登録のご案内
+{% endblock subject %}
+
+{% block text_body %}
+{{ name }}様
+
+farmeeをご利用いただきまして、誠にありがとうございます。 
+以下のリンクから登録を完了してください。
+
+{{ protocol }}://localhost:3000/{{ url|safe }} 
+
+登録頂けますと、ログインが可能となります。
+
+{% endblock text_body %}

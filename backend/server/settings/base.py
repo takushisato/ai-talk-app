@@ -196,17 +196,17 @@ DJOSER = {
     },
     'EMAIL': {
         # アクティベート
-        'activation': 'apps.mail.email.ActivationEmail',
+        'activation': 'apps.account.email.ActivationEmail',
         # アクティベート完了
-        'confirmation': 'apps.mail.email.ConfirmationEmail',
+        'confirmation': 'apps.account.email.ConfirmationEmail',
         # パスワード変更
-        'password_reset': 'apps.mail.email.PasswordResetEmail',
+        'password_reset': 'apps.account.email.PasswordResetEmail',
         # パスワード変更完了
-        'password_changed_confirmation': 'apps.mail.email.PasswordChangedConfirmationEmail',
+        'password_changed_confirmation': 'apps.account.email.PasswordChangedConfirmationEmail',
         # メールアドレス変更（モデルを変更しているためユーザーネームではない）
-        'username_reset': 'apps.mail.email.UsernameResetEmail',
+        'username_reset': 'apps.account.email.UsernameResetEmail',
         # メールアドレス変更完了（モデルを変更しているためユーザーネームではない）
-        'username_changed_confirmation': 'apps.mail.email.UsernameChangedConfirmationEmail',
+        'username_changed_confirmation': 'apps.account.email.UsernameChangedConfirmationEmail',
     },
 }
 # カスタムユーザーモデルの使用を指定

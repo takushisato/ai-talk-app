@@ -1,14 +1,26 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from apps.ai_talk.views import ThreadList, QuestionAndAnswerList, ThreadCrud, QuestionAndAnswerCrud
+from apps.utility.views import CustomTokenCreateView
+
+router = DefaultRouter()
+router.register('thread', ThreadCrud)
+router.register('question-and-answer', QuestionAndAnswerCrud)
 
 urlpatterns = [
+    # admin
     path('admin/', admin.site.urls),
+    # apps
+    path('ai_talk/', include(router.urls)),
+    path('ai_talk/get_thread/', ThreadList.as_view()),
+    path('ai_talk/get_talks/<str:pk>/', QuestionAndAnswerList.as_view()),
+    path('api_token_auth/', CustomTokenCreateView.as_view()),
+    # other
     path('api/v1/', include('rest_framework.urls')),
     path('api/v1/auth/', include('djoser.urls.authtoken')),
     path('api/v1/auth/', include('djoser.urls')),
-    path('ai-talk/', include('apps.ai_talk.urls')),
-    path('api-token-auth/', include('apps.custom_authtoken.urls')),
 ]
 
 if settings.DEBUG:
