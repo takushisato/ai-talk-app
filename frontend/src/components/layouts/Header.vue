@@ -1,20 +1,25 @@
 <script lang="ts">
-export default {
-  name: "Header",
-};
-</script>
-<script setup lang="ts">
 import { ref } from "vue";
 import { useDisplay } from "vuetify";
+export default {
+  name: "Header",
+  setup() {
+    const { mdAndUp } = useDisplay();
+    const drawer = ref(false);
+    const seach = ref("");
 
-const { mdAndUp } = useDisplay();
-const drawer = ref(false);
-const seach = ref("");
-
-function seachClick() {
-  // 後で検索のギミックを仕込むこと
-  alert("クリックしました");
-}
+    function seachClick() {
+      // 後で検索のギミックを仕込むこと
+      alert("クリックしました");
+    }
+    return {
+      mdAndUp,
+      drawer,
+      seach,
+      seachClick,
+    };
+  },
+};
 </script>
 <template>
   <div>

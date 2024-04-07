@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   ssr: false,
   srcDir: "src",
-  components: ["@/components", "@/components/parts", "@/components/blocks", "@/components/forms"],
+  components: ["@/components", "@/components/blocks", "@/components/forms", "@/components/layouts"],
   modules: [],
   css: ["vuetify/lib/styles/main.sass", "@/assets/styles/style.scss"],
   build: {
