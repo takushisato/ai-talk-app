@@ -84,7 +84,7 @@ const autoLogin = async (state: Ref<AuthState>) => {
  */
 const logout = (state: Ref<AuthState>) => {
   return async () => {
-    const { data, error } = await useFetch(hostURL + "/api/v1/auth/token/logout/", {
+    const { data, error } = await useFetch(hostURL + "/api/auth/token/logout/", {
       method: "POST",
       headers: {
         Authorization: "Token " + state.value.token,
@@ -109,7 +109,7 @@ const logout = (state: Ref<AuthState>) => {
  * ログイン中のユーザーのデータを取得
  */
 async function getUser(state: Ref<AuthState>): Promise<User> {
-  const { data, error } = await useFetch<User>(hostURL + "/api/v1/auth/users/me/", {
+  const { data, error } = await useFetch<User>(hostURL + "/api/auth/users/me/", {
     method: "GET",
     headers: { Authorization: "Token " + state.value.token },
     credentials: "include",

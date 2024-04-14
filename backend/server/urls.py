@@ -18,9 +18,9 @@ urlpatterns = [
     path('ai_talk/get_talks/<str:pk>/', QuestionAndAnswerList.as_view()),
     path('api_token_auth/', CustomTokenCreateView.as_view()),
     # other
-    path('api/v1/', include('rest_framework.urls')),
-    path('api/v1/auth/', include('djoser.urls.authtoken')),
-    path('api/v1/auth/', include('djoser.urls')),
+    path('api/', include('rest_framework.urls')),
+    path('api/auth/', include('djoser.urls.authtoken')),
+    path('api/auth/', include('djoser.urls')),
 ]
 
 if settings.DEBUG:
@@ -31,8 +31,8 @@ if settings.DEBUG:
     # schema_view = get_swagger_view(title="anymo API")
     urlpatterns += [
         # https://drf-spectacular.readthedocs.io/en/latest/readme.html#requirements
-        path('api/v1/schema.json/', SpectacularAPIView.as_view(), name='schema'),
-        path('api/v1/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-        path('api/v1/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
+        path('api/schema.json/', SpectacularAPIView.as_view(), name='schema'),
+        path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+        path('api/schema/swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger'),
         path('__debug__/', include(debug_toolbar.urls)),
     ]
