@@ -12,12 +12,14 @@
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
     "nuxt": "^3.10.2",
+    "nuxt-openapi-docs-module": "^5.2.3",
     "pinia": "^2.1.7",
     "vue": "^3.4.19",
     "vue-router": "^4.2.5",
     "vuetify": "^3.5.9"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.1",
     "sass": "^1.72.0"
   }
 }
