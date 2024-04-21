@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useBaseUrlStore } from "~/composables/common/use-base-url-store";
 import type { User, loginResponse } from "~/domain/auth/user";
 
 export const useAuthStore = defineStore({
@@ -13,11 +14,12 @@ export const useAuthStore = defineStore({
   },
   actions: {
     async fetchUser(postData: { email: string; password: string }) {
-      const hostURL = "http://localhost:8000";
+      const hostURL = useBaseUrlStore();
       const { data, error } = await useFetch<loginResponse>(hostURL + "/api-token-auth/", {
         method: "POST",
         body: postData,
       });
+      console.log(hostURL);
       console.log(data);
       console.log(error);
       return data.value;
