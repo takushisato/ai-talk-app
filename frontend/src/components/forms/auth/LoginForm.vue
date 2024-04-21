@@ -4,7 +4,8 @@ export default {
 };
 </script>
 <script lang="ts" setup>
-import { useAuthStore } from "@/composables/authStore";
+// import { useAuthStore } from "@/composables/authStore";
+import { useAuthStore } from "@/composables/common/use-auth-store";
 import { requiredValid, mailValid, passwordLengthValid } from "@/utils/validation";
 import { formEmailValid, formPasswordValid } from "@/utils/validation";
 
@@ -39,7 +40,11 @@ function validationResult() {
  * @returns
  */
 async function login(): Promise<void> {
-  const { result, error } = await authStore.login(email.value, password.value);
+  const postData = {
+    email: email.value,
+    password: password.value,
+  };
+  const { result, error } = await authStore.fetchUser(postData);
   if (!!result) {
     dialog.value = true;
   }
@@ -97,7 +102,7 @@ function closeSnack(): void {
     </div>
     <br />
     <v-btn v-if="validationResult()" type="submit" @click="login()">ログインする</v-btn>
-    <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" />
+    <!-- <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" /> -->
 
     <v-dialog v-model="dialog" max-width="400">
       <v-card>

@@ -15,14 +15,27 @@ export const useAuthStore = defineStore({
   actions: {
     async fetchUser(postData: { email: string; password: string }) {
       const hostURL = useBaseUrlStore();
-      const { data, error } = await useFetch<loginResponse>(hostURL + "/api-token-auth/", {
+      const { data, error } = await useFetch<loginResponse>(hostURL + "/api_token_auth/", {
         method: "POST",
         body: postData,
       });
       console.log(hostURL);
-      console.log(data);
+      console.log(data.value);
       console.log(error);
-      return data.value;
+      if (!!error.value) {
+        // エラーはそのままreturnして呼び出し元で処理する
+        return { result: false, error: error };
+      } else {
+        // dataの戻り値からtokenを摘出
+        const dataValue: any = data.value;
+        const token: any = dataValue.auth_token;
+        // tokenをCookieにセット。有効期限はとりあえず24時間（86,400秒）に設定
+        useCookie("token", {
+          secure: true,
+          maxAge: 86400,
+        }).value = token;
+        return { result: true, error: null };
+      }
     },
   },
 });
