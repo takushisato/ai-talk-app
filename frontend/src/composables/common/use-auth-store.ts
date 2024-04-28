@@ -28,10 +28,8 @@ export const useAuthStore = defineStore({
         method: "POST",
         body: postData,
       });
-      if (!error.value) {
-        // エラーはそのままreturnして呼び出し元で処理
-        return { result: false, error: error };
-      } else {
+      debugger;
+      if (data.value) {
         // dataの戻り値を検証した後tokenを摘出。Cookieにセット
         if (!data.value) return { result: false, error: error };
         const token = data.value?.auth_token;
@@ -42,6 +40,9 @@ export const useAuthStore = defineStore({
         // isAuthenticatedをtrueにしてログイン状態にする
         this.isAuthenticated = true;
         return { result: true, error: null };
+      } else {
+        // エラーはそのままreturnして呼び出し元で処理
+        return { result: false, error: error };
       }
     },
   },
