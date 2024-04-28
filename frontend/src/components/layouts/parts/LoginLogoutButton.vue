@@ -8,7 +8,7 @@
       <div class="text-center">
         <p>ログイン中です</p>
         <br />
-        <v-btn to="/auth/logout" variant="outlined">ログアウトする</v-btn>
+        <v-btn variant="outlined" @click="authStore.logout">ログアウトする</v-btn>
       </div>
     </div>
   </div>
@@ -19,7 +19,6 @@ export default defineComponent({
   name: "LoginLogoutButton",
   setup() {
     const authStore = useAuthStore();
-    // const loginState = authStore.$state.isAuthenticated;
     return { authStore };
   },
 });

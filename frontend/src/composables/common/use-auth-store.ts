@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { apiBaseUrl } from "~/utils/api-base-url";
 import type { User } from "~/domain/auth/user";
 import type { login, loginResponse } from "~/domain/auth/login";
+import { ro } from "vuetify/locale";
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -21,6 +22,8 @@ export const useAuthStore = defineStore({
     logout() {
       useCookie("token").value = null;
       this.isAuthenticated = false;
+      const router = useRouter();
+      router.push("/");
     },
     async fetchUser(postData: login) {
       const hostURL = apiBaseUrl();
@@ -28,7 +31,6 @@ export const useAuthStore = defineStore({
         method: "POST",
         body: postData,
       });
-      debugger;
       if (data.value) {
         // dataの戻り値を検証した後tokenを摘出。Cookieにセット
         if (!data.value) return { result: false, error: error };
