@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { apiBaseUrl } from "~/composables/common/api-base-url";
+import { apiBaseUrl } from "~/utils/api-base-url";
 import type { User } from "~/domain/auth/user";
 import type { login, loginResponse } from "~/domain/auth/login";
 
