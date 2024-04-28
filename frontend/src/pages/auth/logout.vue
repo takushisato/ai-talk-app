@@ -2,7 +2,7 @@
   <AuthLogoutPage />
 </template>
 <script lang="ts">
-import AuthLogoutPage from "~/components/common/auth/AuthLogoutPage.vue";
+import AuthLogoutPage from "~/components/auth/logout/AuthLogoutPage.vue";
 export default defineComponent({
   components: {
     AuthLogoutPage,

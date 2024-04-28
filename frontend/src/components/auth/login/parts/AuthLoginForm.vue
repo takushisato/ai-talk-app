@@ -1,8 +1,4 @@
 <template>
-  <h3>ログイン</h3>
-  <br />
-  <nuxt-link to="/settings/reset-password">パスワードを忘れた方はこちら</nuxt-link>
-  <br /><br />
   <div class="form">
     <div>
       <label>【必須】メールアドレス：</label>
