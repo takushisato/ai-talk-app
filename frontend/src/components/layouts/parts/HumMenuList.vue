@@ -8,53 +8,7 @@ export default defineComponent({
         URL: "/ai-assistant",
         icon: "mdi-loop",
       },
-      // {
-      //   name: 'お気に入りの商品',
-      //   URL: '/',
-      //   icon: 'mdi-heart',
-      // },
     ];
-    // const seller = [
-    //   {
-    //     name: '新規出品する',
-    //     URL: '/items/create',
-    //     icon: 'mdi-human-greeting',
-    //   },
-    //   {
-    //     name: '下書きを見る',
-    //     URL: '/',
-    //     icon: 'mdi-book-multiple-variant',
-    //   },
-    //   {
-    //     name: '出品履歴',
-    //     URL: '/',
-    //     icon: 'mdi-camera',
-    //   },
-    // ];
-    // const timeline = [
-    //   {
-    //     name: '一覧を見る',
-    //     URL: '/',
-    //     icon: 'mdi-instagram',
-    //   },
-    //   {
-    //     name: '投稿する',
-    //     URL: '/',
-    //     icon: 'mdi-robot',
-    //   },
-    //   {
-    //     name: 'いいね！した投稿',
-    //     URL: '/',
-    //     icon: 'mdi-lightbulb-on',
-    //   },
-    // ];
-    // const directMessage = [
-    //   {
-    //     name: '一覧を見る',
-    //     URL: '/',
-    //     icon: 'mdi-email',
-    //   },
-    // ];
     const settings = [
       {
         name: "各種設定",
@@ -72,18 +26,6 @@ export default defineComponent({
         title: "AIと会話",
         menuItem: product,
       },
-      // {
-      //   title: '出品する',
-      //   menuItem: seller,
-      // },
-      // {
-      //   title: 'タイムライン',
-      //   menuItem: timeline,
-      // },
-      // {
-      //   title: 'メッセージ',
-      //   menuItem: directMessage,
-      // },
       {
         title: "ユーザー補助",
         menuItem: settings,
