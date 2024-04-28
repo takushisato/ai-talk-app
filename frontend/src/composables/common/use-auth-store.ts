@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { useBaseUrlStore } from "~/composables/common/use-base-url-store";
+import { useBaseUrlStore } from "~/composables/common/base-url";
 import type { User, loginResponse } from "~/domain/auth/user";
 
 export const useAuthStore = defineStore({
@@ -13,6 +13,14 @@ export const useAuthStore = defineStore({
     // authedUser: (state) => state.user as User,
   },
   actions: {
+    authenticate() {
+      const token = useCookie("token").value;
+      this.isAuthenticated = !!token;
+    },
+    logout() {
+      useCookie("token").value = null;
+      this.isAuthenticated = false;
+    },
     async fetchUser(postData: { email: string; password: string }) {
       const hostURL = useBaseUrlStore();
       const { data, error } = await useFetch<loginResponse>(hostURL + "/api_token_auth/", {
@@ -28,7 +36,7 @@ export const useAuthStore = defineStore({
       } else {
         // dataの戻り値からtokenを摘出
         const dataValue: any = data.value;
-        const token: any = dataValue.auth_token;
+        const token = dataValue.auth_token;
         // tokenをCookieにセット。有効期限はとりあえず24時間（86,400秒）に設定
         useCookie("token", {
           secure: true,
