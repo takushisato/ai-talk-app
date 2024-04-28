@@ -20,14 +20,14 @@ export default defineComponent({
     const product = [
       {
         name: "AIに聞く",
-        URL: "/ai-assistant",
+        URL: "/",
         icon: "mdi-ghost",
       },
     ];
     const settings = [
       {
         name: "各種設定",
-        URL: "/settings",
+        URL: "/",
         icon: "mdi-wrench",
       },
       {

@@ -1,7 +1,7 @@
 <template>
   <h3>ログイン</h3>
   <br />
-  <nuxt-link to="/settings/reset-password">パスワードを忘れた方はこちら</nuxt-link>
+  <nuxt-link to="/">パスワードを忘れた方はこちら</nuxt-link>
   <br /><br />
   <AuthLoginForm />
 </template>

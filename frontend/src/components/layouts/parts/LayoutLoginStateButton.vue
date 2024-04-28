@@ -2,7 +2,7 @@
   <div>
     <div v-if="!authStore.$state.isAuthenticated" class="justify-center align-baseline d-flex" style="gap: 1rem">
       <v-btn to="/auth/login" variant="plain">ログイン</v-btn>
-      <v-btn to="/auth/register" variant="outlined">新規登録</v-btn>
+      <v-btn to="" variant="outlined">新規登録</v-btn>
     </div>
     <div v-else>
       <div class="text-center">
