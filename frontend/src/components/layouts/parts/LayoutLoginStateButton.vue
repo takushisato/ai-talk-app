@@ -20,7 +20,7 @@ export default defineComponent({
   components: {
     AuthLogoutButton,
   },
-  name: "LoginLogoutButton",
+  name: "LayoutLoginStateButton",
   setup() {
     const authStore = useAuthStore();
     return { authStore };

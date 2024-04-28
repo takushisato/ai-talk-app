@@ -46,7 +46,7 @@ import { useAuthStore } from "@/composables/common/use-auth-store";
 import { requiredValid, mailValid, passwordLengthValid } from "@/utils/validation";
 import { formEmailValid, formPasswordValid } from "@/utils/validation";
 export default defineComponent({
-  name: "LoginForm",
+  name: "AuthLoginForm",
   setup() {
     const authStore = useAuthStore();
     const router = useRouter();

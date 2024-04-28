@@ -15,7 +15,7 @@
 </template>
 <script lang="ts">
 export default defineComponent({
-  name: "HumMenuList",
+  name: "LayoutHumMenuList",
   setup() {
     const product = [
       {

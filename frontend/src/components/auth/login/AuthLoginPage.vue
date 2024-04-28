@@ -11,6 +11,6 @@ export default defineComponent({
   components: {
     AuthLoginForm,
   },
-  name: "LoginForm",
+  name: "AuthLoginPage",
 });
 </script>
