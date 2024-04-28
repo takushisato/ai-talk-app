@@ -1,13 +1,3 @@
-<script lang="ts">
-import Header from "~/components/layouts/Header.vue";
-import Footer from "~/components/layouts/Footer.vue";
-export default defineComponent({
-  components: {
-    Header,
-    Footer,
-  },
-});
-</script>
 <template>
   <v-app id="inspire">
     <v-main class="bg-background">
@@ -21,6 +11,16 @@ export default defineComponent({
     </v-main>
   </v-app>
 </template>
+<script lang="ts">
+import Header from "~/components/layouts/Header.vue";
+import Footer from "~/components/layouts/Footer.vue";
+export default defineComponent({
+  components: {
+    Header,
+    Footer,
+  },
+});
+</script>
 <style scoped>
 .main {
   min-height: 80vh;

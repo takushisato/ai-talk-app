@@ -1,3 +1,18 @@
+<template>
+  <v-list nav>
+    <v-list-item v-for="link in links" variant="text" class="border-b-sm">
+      <h4>{{ link.title }}</h4>
+      <v-list-item v-for="menu in link.menuItem" variant="text">
+        <nuxt-link :to="`${menu.URL}`" style="text-decoration: none" class="text-button text-textColor">
+          <div class="d-flex">
+            <v-icon class="text-sm-center my-auto mr-2" color="grey-lighten-1">{{ menu.icon }}</v-icon>
+            <p class="link rounded-lg px-2">{{ menu.name }}</p>
+          </div>
+        </nuxt-link>
+      </v-list-item>
+    </v-list-item>
+  </v-list>
+</template>
 <script lang="ts">
 export default defineComponent({
   name: "HumMenuList",
@@ -37,21 +52,6 @@ export default defineComponent({
   },
 });
 </script>
-<template>
-  <v-list nav>
-    <v-list-item v-for="link in links" variant="text" class="border-b-sm">
-      <h4>{{ link.title }}</h4>
-      <v-list-item v-for="menu in link.menuItem" variant="text">
-        <nuxt-link :to="`${menu.URL}`" style="text-decoration: none" class="text-button text-textColor">
-          <div class="d-flex">
-            <v-icon class="text-sm-center my-auto mr-2" color="grey-lighten-1">{{ menu.icon }}</v-icon>
-            <p class="link rounded-lg px-2">{{ menu.name }}</p>
-          </div>
-        </nuxt-link>
-      </v-list-item>
-    </v-list-item>
-  </v-list>
-</template>
 <style scoped>
 .link {
   width: 100%;

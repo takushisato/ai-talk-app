@@ -1,13 +1,3 @@
-<script lang="ts">
-export default defineComponent({
-  name: "LoginLogoutButton",
-  setup() {
-    const authStore = useAuthStore();
-    const { state } = authStore;
-    return { state };
-  },
-});
-</script>
 <template>
   <div>
     <div v-if="!state.isAuthenticated" class="justify-center align-baseline d-flex" style="gap: 1rem">
@@ -22,6 +12,16 @@ export default defineComponent({
     </div>
   </div>
 </template>
+<script lang="ts">
+export default defineComponent({
+  name: "LoginLogoutButton",
+  setup() {
+    const authStore = useAuthStore();
+    const { state } = authStore;
+    return { state };
+  },
+});
+</script>
 <style scoped>
 .switch {
   display: none;

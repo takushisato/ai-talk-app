@@ -1,78 +1,3 @@
-<script lang="ts">
-export default {
-  name: "LoginForm",
-};
-</script>
-<script lang="ts" setup>
-// import { useAuthStore } from "@/composables/authStore";
-import { useAuthStore } from "@/composables/common/use-auth-store";
-import { requiredValid, mailValid, passwordLengthValid } from "@/utils/validation";
-import { formEmailValid, formPasswordValid } from "@/utils/validation";
-
-const authStore = useAuthStore();
-const router = useRouter();
-
-const email: globalThis.Ref<string> = ref("");
-const password: globalThis.Ref<string> = ref("");
-
-let dialog: globalThis.Ref<boolean> = ref(false);
-let errorMessages: any = [];
-let errorResult: globalThis.Ref<boolean> = ref(false);
-
-/**
- * バリデーションの結果、問題がなければtrue、問題があればfalseを返します
- * Formの送信ボタンの表示と非表示の判定をリアクティブに行っています
- */
-function validationResult() {
-  const emailResult = formEmailValid(email);
-  const passwordResult = formPasswordValid(password);
-
-  if (emailResult && passwordResult) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-/**
- * authStateからログイン
- * @param state
- * @returns
- */
-async function login(): Promise<void> {
-  const postData = {
-    email: email.value,
-    password: password.value,
-  };
-  const { result, error } = await authStore.fetchUser(postData);
-  if (!!result) {
-    dialog.value = true;
-  }
-
-  if (!!error) {
-    // backendからのエラーが来た場合は、SnackBarで処理
-    errorResult.value = true;
-    const errorValue: any = error.value;
-    errorMessages = errorValue.data;
-  }
-}
-
-/**
- * 処理が正常に終了したらダイアログを閉じてTOPページへ遷移
- */
-function topPageMove(): void {
-  dialog.value = false;
-  router.push("/");
-}
-
-/**
- * エラー文表示を閉じる。emitsでイベントを受け取り実行
- */
-function closeSnack(): void {
-  errorMessages = [];
-  errorResult.value = false;
-}
-</script>
 <template>
   <h3>ログイン</h3>
   <br />
@@ -120,3 +45,88 @@ function closeSnack(): void {
     </v-dialog>
   </div>
 </template>
+<script lang="ts">
+import { useAuthStore } from "@/composables/common/use-auth-store";
+import { requiredValid, mailValid, passwordLengthValid } from "@/utils/validation";
+import { formEmailValid, formPasswordValid } from "@/utils/validation";
+export default defineComponent({
+  name: "LoginForm",
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const email: globalThis.Ref<string> = ref("");
+    const password: globalThis.Ref<string> = ref("");
+
+    let dialog: globalThis.Ref<boolean> = ref(false);
+    let errorMessages: any = [];
+    let errorResult: globalThis.Ref<boolean> = ref(false);
+
+    /**
+     * バリデーションの結果、問題がなければtrue、問題があればfalseを返します
+     * Formの送信ボタンの表示と非表示の判定をリアクティブに行っています
+     */
+    function validationResult() {
+      const emailResult = formEmailValid(email);
+      const passwordResult = formPasswordValid(password);
+
+      if (emailResult && passwordResult) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    /**
+     * authStateからログイン
+     * @param state
+     * @returns
+     */
+    async function login(): Promise<void> {
+      const postData = {
+        email: email.value,
+        password: password.value,
+      };
+      const { result, error } = await authStore.fetchUser(postData);
+      if (!!result) {
+        dialog.value = true;
+      }
+
+      if (!!error) {
+        // backendからのエラーが来た場合は、SnackBarで処理
+        errorResult.value = true;
+        const errorValue: any = error.value;
+        errorMessages = errorValue.data;
+      }
+    }
+
+    /**
+     * 処理が正常に終了したらダイアログを閉じてTOPページへ遷移
+     */
+    function topPageMove(): void {
+      dialog.value = false;
+      router.push("/");
+    }
+
+    /**
+     * エラー文表示を閉じる。emitsでイベントを受け取り実行
+     */
+    function closeSnack(): void {
+      errorMessages = [];
+      errorResult.value = false;
+    }
+
+    return {
+      email,
+      password,
+      dialog,
+      errorMessages,
+      errorResult,
+      validationResult,
+      login,
+      topPageMove,
+      closeSnack,
+    };
+  },
+});
+</script>
