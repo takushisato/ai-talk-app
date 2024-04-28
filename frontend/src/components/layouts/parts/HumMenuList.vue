@@ -6,7 +6,7 @@ export default defineComponent({
       {
         name: "AIに聞く",
         URL: "/ai-assistant",
-        icon: "mdi-loop",
+        icon: "mdi-ghost",
       },
     ];
     const settings = [

@@ -1,8 +1,12 @@
 <script lang="ts">
 import { ref } from "vue";
 import { useDisplay } from "vuetify";
+import HumMenuList from "./parts/HumMenuList.vue";
 export default {
   name: "Header",
+  components: {
+    HumMenuList,
+  },
   setup() {
     const { mdAndUp } = useDisplay();
     const drawer = ref(false);
