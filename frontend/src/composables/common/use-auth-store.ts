@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { useBaseUrlStore } from "~/composables/common/base-url";
+import { apiBaseUrl } from "~/composables/common/api-base-url";
 import type { User, loginResponse } from "~/domain/auth/user";
 
 export const useAuthStore = defineStore({
@@ -22,7 +22,7 @@ export const useAuthStore = defineStore({
       this.isAuthenticated = false;
     },
     async fetchUser(postData: { email: string; password: string }) {
-      const hostURL = useBaseUrlStore();
+      const hostURL = apiBaseUrl();
       const { data, error } = await useFetch<loginResponse>(hostURL + "/api_token_auth/", {
         method: "POST",
         body: postData,
@@ -30,7 +30,7 @@ export const useAuthStore = defineStore({
       console.log(hostURL);
       console.log(data.value);
       console.log(error);
-      if (!!error.value) {
+      if (!error.value) {
         // エラーはそのままreturnして呼び出し元で処理する
         return { result: false, error: error };
       } else {

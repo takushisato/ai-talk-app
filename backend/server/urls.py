@@ -12,15 +12,18 @@ router.register('question-and-answer', QuestionAndAnswerCrud)
 urlpatterns = [
     # admin
     path('admin/', admin.site.urls),
+
+    # other
+    path('api/', include('rest_framework.urls')),
+    path('api/auth/', include('djoser.urls.authtoken')),
+    path('api/auth/', include('djoser.urls')),
+
     # apps
     path('ai_talk/', include(router.urls)),
     path('ai_talk/get_thread/', ThreadList.as_view()),
     path('ai_talk/get_talks/<str:pk>/', QuestionAndAnswerList.as_view()),
     path('api_token_auth/', CustomTokenCreateView.as_view()),
-    # other
-    path('api/', include('rest_framework.urls')),
-    path('api/auth/', include('djoser.urls.authtoken')),
-    path('api/auth/', include('djoser.urls')),
+
 ]
 
 if settings.DEBUG:

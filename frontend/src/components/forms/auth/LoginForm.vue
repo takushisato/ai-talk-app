@@ -92,12 +92,12 @@ export default defineComponent({
         dialog.value = true;
       }
 
-      if (!!error) {
-        // backendからのエラーが来た場合は、SnackBarで処理
-        errorResult.value = true;
-        const errorValue: any = error.value;
-        errorMessages = errorValue.data;
-      }
+      // if (!error) {
+      //   // backendからのエラーが来た場合は、SnackBarで処理
+      //   errorResult.value = true;
+      //   const errorValue: any = error.value;
+      //   errorMessages = errorValue.data;
+      // }
     }
 
     /**
