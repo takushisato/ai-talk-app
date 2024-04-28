@@ -8,14 +8,18 @@
       <div class="text-center">
         <p>ログイン中です</p>
         <br />
-        <v-btn variant="outlined" @click="authStore.logout">ログアウトする</v-btn>
+        <AuthLogoutButton />
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { useAuthStore } from "~/composables/common/use-auth-store";
+import AuthLogoutButton from "~/components/auth/logout/parts/AuthLogoutButton.vue";
 export default defineComponent({
+  components: {
+    AuthLogoutButton,
+  },
   name: "LoginLogoutButton",
   setup() {
     const authStore = useAuthStore();
