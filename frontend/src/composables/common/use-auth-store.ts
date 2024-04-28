@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { apiBaseUrl } from "~/composables/common/api-base-url";
-import type { User, loginResponse } from "~/domain/auth/user";
+import type { User } from "~/domain/auth/user";
+import type { login, loginResponse } from "~/domain/auth/login";
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -21,27 +22,25 @@ export const useAuthStore = defineStore({
       useCookie("token").value = null;
       this.isAuthenticated = false;
     },
-    async fetchUser(postData: { email: string; password: string }) {
+    async fetchUser(postData: login) {
       const hostURL = apiBaseUrl();
       const { data, error } = await useFetch<loginResponse>(hostURL + "/api_token_auth/", {
         method: "POST",
         body: postData,
       });
-      console.log(hostURL);
-      console.log(data.value);
-      console.log(error);
       if (!error.value) {
-        // エラーはそのままreturnして呼び出し元で処理する
+        // エラーはそのままreturnして呼び出し元で処理
         return { result: false, error: error };
       } else {
-        // dataの戻り値からtokenを摘出
-        const dataValue: any = data.value;
-        const token = dataValue.auth_token;
-        // tokenをCookieにセット。有効期限はとりあえず24時間（86,400秒）に設定
+        // dataの戻り値を検証した後tokenを摘出。Cookieにセット
+        if (!data.value) return { result: false, error: error };
+        const token = data.value?.auth_token;
         useCookie("token", {
           secure: true,
           maxAge: 86400,
         }).value = token;
+        // isAuthenticatedをtrueにしてログイン状態にする
+        this.isAuthenticated = true;
         return { result: true, error: null };
       }
     },

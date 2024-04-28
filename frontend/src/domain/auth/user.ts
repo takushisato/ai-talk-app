@@ -3,7 +3,3 @@ export type User = {
   name: string;
   email: string;
 };
-
-export type loginResponse = {
-  auth_token: string;
-};
