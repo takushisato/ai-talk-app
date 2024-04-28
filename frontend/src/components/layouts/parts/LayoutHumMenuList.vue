@@ -1,5 +1,4 @@
 <template>
-  <LoginLogoutButton />
   <v-list nav>
     <v-list-item v-for="link in links" variant="text" class="border-b-sm">
       <h4>{{ link.title }}</h4>
@@ -15,11 +14,7 @@
   </v-list>
 </template>
 <script lang="ts">
-import LoginLogoutButton from "./LoginLogoutButton.vue";
 export default defineComponent({
-  components: {
-    LoginLogoutButton,
-  },
   name: "HumMenuList",
   setup() {
     const product = [

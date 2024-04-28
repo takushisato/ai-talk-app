@@ -1,13 +1,13 @@
 <template>
   <footer class="bg-footer mt-8 py-8">
-    <FooterMenu />
+    <LayoutFooterMenu />
   </footer>
 </template>
 <script lang="ts">
-import FooterMenu from "./parts/FooterMenu.vue";
+import LayoutFooterMenu from "./parts/LayoutFooterMenu.vue";
 export default defineComponent({
   components: {
-    FooterMenu,
+    LayoutFooterMenu,
   },
   name: "Footer",
 });

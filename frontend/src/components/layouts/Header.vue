@@ -3,9 +3,9 @@
     <!-- ハンバーガーメニュー -->
     <v-navigation-drawer temporary v-model="drawer">
       <div class="text-center mt-8">
-        <LoginLogoutButton />
+        <LayoutLoginStateButton />
       </div>
-      <HumMenuList />
+      <LayoutHumMenuList />
     </v-navigation-drawer>
 
     <!-- ヘッダーメニュー -->
@@ -27,11 +27,13 @@
 <script lang="ts">
 import { ref } from "vue";
 import { useDisplay } from "vuetify";
-import HumMenuList from "./parts/HumMenuList.vue";
+import LayoutHumMenuList from "./parts/LayoutHumMenuList.vue";
+import LayoutLoginStateButton from "./parts/LayoutLoginStateButton.vue";
 export default {
   name: "Header",
   components: {
-    HumMenuList,
+    LayoutHumMenuList,
+    LayoutLoginStateButton,
   },
   setup() {
     const { mdAndUp } = useDisplay();
