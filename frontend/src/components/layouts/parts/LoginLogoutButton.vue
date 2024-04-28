@@ -5,9 +5,11 @@
       <v-btn to="/auth/register" variant="outlined">新規登録</v-btn>
     </div>
     <div v-else>
-      ログイン中です
-      <br />
-      <v-btn to="/auth/logout" variant="outlined">ログアウトする</v-btn>
+      <div class="text-center">
+        <p>ログイン中です</p>
+        <br />
+        <v-btn to="/auth/logout" variant="outlined">ログアウトする</v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -22,8 +24,4 @@ export default defineComponent({
   },
 });
 </script>
-<style scoped>
-.switch {
-  display: none;
-}
-</style>
+<style></style>
