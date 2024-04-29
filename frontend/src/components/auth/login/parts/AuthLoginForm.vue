@@ -45,15 +45,16 @@
 import { useAuthStore } from "@/composables/common/use-auth-store";
 import { requiredValid, mailValid, passwordLengthValid } from "@/utils/validation";
 import { formEmailValid, formPasswordValid } from "@/utils/validation";
+import type { login } from "@/domain/auth/login";
 export default defineComponent({
   name: "AuthLoginForm",
   setup() {
     const authStore = useAuthStore();
     const router = useRouter();
 
+    // TODO 状態はstateへ移行
     const email: globalThis.Ref<string> = ref("");
     const password: globalThis.Ref<string> = ref("");
-
     let dialog: globalThis.Ref<boolean> = ref(false);
     let errorMessages: any = [];
     let errorResult: globalThis.Ref<boolean> = ref(false);
@@ -79,21 +80,14 @@ export default defineComponent({
      * @returns
      */
     async function login(): Promise<void> {
-      const postData = {
+      const postData: login = {
         email: email.value,
         password: password.value,
       };
-      const { result, error } = await authStore.fetchUser(postData);
-      if (!!result) {
+      const isApiResult: boolean = await authStore.login(postData);
+      if (isApiResult) {
         dialog.value = true;
       }
-
-      // if (!error) {
-      //   // backendからのエラーが来た場合は、SnackBarで処理
-      //   errorResult.value = true;
-      //   const errorValue: any = error.value;
-      //   errorMessages = errorValue.data;
-      // }
     }
 
     /**

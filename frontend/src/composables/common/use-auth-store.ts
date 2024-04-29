@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import { apiBaseUrl } from "~/utils/api-base-url";
+import { handleErrorResponse } from "~/domain/api/api-error-handler";
 import type { User } from "~/domain/auth/user";
-import type { login, loginResponse } from "~/domain/auth/login";
-import { ro } from "vuetify/locale";
+import type { login } from "~/domain/auth/login";
+import type { AxiosResponse, AxiosError } from "axios";
+import axios from "axios";
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -25,26 +27,30 @@ export const useAuthStore = defineStore({
       const router = useRouter();
       router.push("/");
     },
-    async fetchUser(postData: login) {
-      const hostURL = apiBaseUrl();
-      const { data, error } = await useFetch<loginResponse>(hostURL + "/api_token_auth/", {
-        method: "POST",
-        body: postData,
-      });
-      if (data.value) {
-        // dataの戻り値を検証した後tokenを摘出。Cookieにセット
-        if (!data.value) return { result: false, error: error };
-        const token = data.value?.auth_token;
-        useCookie("token", {
-          secure: true,
-          maxAge: 86400,
-        }).value = token;
-        // isAuthenticatedをtrueにしてログイン状態にする
-        this.isAuthenticated = true;
-        return { result: true, error: null };
-      } else {
-        // エラーはそのままreturnして呼び出し元で処理
-        return { result: false, error: error };
+    async login(postData: login) {
+      try {
+        const hostURL = apiBaseUrl();
+        const response: AxiosResponse = await axios.post(hostURL + "/api_token_auth/", postData);
+        if (response.status === 200) {
+          const token: string = response.data.auth_token;
+          useCookie("token", {
+            secure: true,
+            maxAge: 86400,
+          }).value = token;
+          this.isAuthenticated = true;
+          return true;
+        } else {
+          console.error("Login failed");
+          return false;
+        }
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          await handleErrorResponse(axiosError.response);
+        } else {
+          console.error("An error occurred:", axiosError.message);
+        }
+        return false;
       }
     },
   },
