@@ -5,13 +5,20 @@ import type { User } from "~/domain/auth/user";
 import type { login } from "~/domain/auth/login";
 import type { AxiosResponse, AxiosError } from "axios";
 import axios from "axios";
-
 export const useAuthStore = defineStore({
   id: "auth",
-
   state: () => ({
     isAuthenticated: false,
     user: null as User | null,
+    form: {
+      email: "",
+      password: "",
+    },
+    error: {
+      errorMessage: "",
+      isError: false,
+    },
+    dialog: false,
   }),
   getters: {
     // authedUser: (state) => state.user as User,
@@ -38,12 +45,19 @@ export const useAuthStore = defineStore({
             maxAge: 86400,
           }).value = token;
           this.isAuthenticated = true;
+          this.dialog = true;
           return true;
         } else {
+          this.isAuthenticated = false;
+          this.error.isError = true;
+          this.error.errorMessage = "ログインに失敗しました。";
           console.error("Login failed");
           return false;
         }
       } catch (error) {
+        this.isAuthenticated = false;
+        this.error.isError = true;
+        this.error.errorMessage = "ログインに失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
           await handleErrorResponse(axiosError.response);
@@ -51,6 +65,9 @@ export const useAuthStore = defineStore({
           console.error("An error occurred:", axiosError.message);
         }
         return false;
+      } finally {
+        this.form.email = "";
+        this.form.password = "";
       }
     },
   },

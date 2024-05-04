@@ -12,7 +12,7 @@ export const requiredValid = (value: any) => {
   if (!!value) {
     return !!value;
   } else {
-    return '必須項目です。必ず入力してください。';
+    return "必須項目です。必ず入力してください。";
   }
 };
 
@@ -24,7 +24,7 @@ export const nameLengthValid = (value: any) => {
   if (value.length <= 20) {
     return value.length <= 20;
   } else {
-    return '20文字以内で入力してください。';
+    return "20文字以内で入力してください。";
   }
 };
 
@@ -34,9 +34,9 @@ export const nameLengthValid = (value: any) => {
  */
 export const passwordLengthValid = (password: any) => {
   if (passSync.test(password) == false) {
-    return 'パスワードは半角英数字8文字以上で入力してください。';
+    return "パスワードは半角英数字8文字以上で入力してください。";
   } else {
-    return false
+    return false;
   }
 };
 
@@ -46,9 +46,9 @@ export const passwordLengthValid = (password: any) => {
  */
 export const mailValid = (email: any) => {
   if (regex.test(email) == false) {
-    return '@マークを含めた形式のメールアドレスを入力してください。';
+    return "@マークを含めた形式のメールアドレスを入力してください。";
   } else {
-    return false
+    return false;
   }
 };
 
@@ -66,8 +66,8 @@ export const formNameValid = (name: any) => {
  * VuetifyのFormのsubmitボタン表示管理用のバリデーション
  * emailを判定します
  */
-export const formEmailValid = (email: any) => {
-  if (regex.test(email.value) == true) {
+export const formEmailValid = (email: string) => {
+  if (regex.test(email) == true) {
     return { result: true };
   }
 };
@@ -76,8 +76,8 @@ export const formEmailValid = (email: any) => {
  * VuetifyのFormのsubmitボタン表示管理用のバリデーション
  * passwordを判定します
  */
-export const formPasswordValid = (password: any) => {
-  if (passSync.test(password.value) == true) {
+export const formPasswordValid = (password: string) => {
+  if (passSync.test(password) == true) {
     return { result: true };
   }
 };
