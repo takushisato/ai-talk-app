@@ -24,10 +24,10 @@ export const useAuthStore = defineStore({
     // authedUser: (state) => state.user as User,
   },
   actions: {
-    authenticate() {
-      const token = useCookie("token").value;
-      this.isAuthenticated = !!token;
-    },
+    // authenticate() {
+    //   const token = useCookie("token").value;
+    //   this.isAuthenticated = !!token;
+    // },
     logout() {
       useCookie("token").value = null;
       this.isAuthenticated = false;
