@@ -40,7 +40,7 @@ export const useAuthStore = defineStore({
           }).value = this.token;
           this.isAuthenticated = true;
           this.dialog = true;
-          this.getUserInfo();
+          this.updateUserAuthenticationStatus();
           return true;
         } else {
           this.isAuthenticated = false;
@@ -82,7 +82,7 @@ export const useAuthStore = defineStore({
      *
      * (取得できればログイン、tokenに問題がありユーザー情報が取得できない場合はログアウトになる）
      */
-    async getUserInfo() {
+    async updateUserAuthenticationStatus() {
       try {
         const hostURL = apiBaseUrl();
         const response: AxiosResponse = await axios.get(hostURL + "api/auth/users/me/", {
@@ -116,7 +116,7 @@ export const useAuthStore = defineStore({
       if (token) {
         this.token = token;
         this.isAuthenticated = true;
-        await this.getUserInfo();
+        await this.updateUserAuthenticationStatus();
       }
     },
   },
