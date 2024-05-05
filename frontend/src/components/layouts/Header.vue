@@ -9,7 +9,7 @@
     </v-navigation-drawer>
 
     <!-- ヘッダーメニュー -->
-    <v-app-bar app dark>
+    <v-app-bar app dark scroll-behavior="hide">
       <v-container fluid class="d-flex align-center headerContainer">
         <div v-if="mdAndUp">
           <nuxt-link to="/">

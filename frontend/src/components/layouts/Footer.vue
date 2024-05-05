@@ -1,7 +1,7 @@
 <template>
-  <footer class="bg-footer mt-8 py-8">
+  <v-footer class="bg-footer mt-8 pa-0 footer">
     <LayoutFooterMenu />
-  </footer>
+  </v-footer>
 </template>
 <script lang="ts">
 import LayoutFooterMenu from "./parts/LayoutFooterMenu.vue";
@@ -12,4 +12,11 @@ export default defineComponent({
   name: "Footer",
 });
 </script>
-<style scoped></style>
+<style scoped>
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+</style>
