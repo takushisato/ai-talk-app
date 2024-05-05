@@ -49,6 +49,7 @@ export const useAuthStore = defineStore({
           this.form.email = "";
           return true;
         } else {
+          // エラー時はcatchに飛ぶため、ここは通らないが念の為falseを返す様に設定
           this.isAuthenticated = false;
           this.error.isError = true;
           this.error.errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
