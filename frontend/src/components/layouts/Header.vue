@@ -35,17 +35,9 @@ export default {
   setup() {
     const { mdAndUp } = useDisplay();
     const drawer = ref(false);
-    const seach = ref("");
-
-    function seachClick() {
-      // 後で検索のギミックを仕込むこと
-      alert("クリックしました");
-    }
     return {
       mdAndUp,
       drawer,
-      seach,
-      seachClick,
     };
   },
 };
