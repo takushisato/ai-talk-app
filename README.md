@@ -8,6 +8,7 @@ Nuxt.js 3.10.3<br>
 TypeScript <br>
 pinia<br>
 Vuetify<br>
+...など<br>
 
 **backend**<br>
 Python 3.10.8<br>
@@ -15,8 +16,9 @@ Django 4.2.3<br>
 OpenAi 1.12.0<br>
 Django Rest Framework 3.14.0<br>
 Djoser 2.2.2<br>
+...など<br>
 
-**今後追加予定**
+**今後追加予定**<br>
 Docker<br>
 MySQL<br>
 
@@ -26,27 +28,11 @@ MySQL<br>
 
 `OpenAI`の API を取得する API キーを取得してください。<br>
 取得後は`.text`ファイル等に保存しておいてください。<br>
-<br>
 
-### Docker 環境について
-
-```
-# 起動コマンド
-docker-compose up -d backend
-
-# 終了
-docker-compose down
-```
+参考サイト<br>
+https://nicecamera.kidsplates.jp/help/feature/ai-kata/openapi_apikey/<br>
 
 <br>
-
-Docker 環境を利用する場合は、backend プロジェクトルートに移動し、
-
-```
-docker-compose run --rm runner
-```
-
-で runner コンテナに入ってコマンドを実行する。
 
 ### backend について
 
