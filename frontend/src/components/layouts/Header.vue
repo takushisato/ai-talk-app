@@ -11,9 +11,9 @@
     <!-- ヘッダーメニュー -->
     <v-app-bar app dark scroll-behavior="hide">
       <v-container fluid class="d-flex align-center headerContainer">
-        <div v-if="mdAndUp">
+        <div>
           <nuxt-link to="/">
-            <p class="mr-4">TOP</p>
+            <p class="mr-auto ml-4">TOP</p>
           </nuxt-link>
         </div>
         <v-app-bar-nav-icon @click="drawer = !drawer" class="mr-0 ml-auto"></v-app-bar-nav-icon>
