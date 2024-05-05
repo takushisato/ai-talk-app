@@ -138,7 +138,6 @@ npm run dev
 ### 参考サイト
 
 <br>
-https://note.com/shinya_hd/n/nc9ba9f431e9b
 
 Nuxt3 公式<br>
 https://zenn.dev/torish/scraps/16676a3500ad99
@@ -155,5 +154,5 @@ https://cocoatomo.github.io/poetry-ja/
 pysen<br>
 https://github.com/pfnet/pysen
 
-Vuetify 3
+Vuetify 3<br>
 https://next.vuetifyjs.com/en/
