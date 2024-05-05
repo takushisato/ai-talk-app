@@ -46,18 +46,19 @@ export const useAuthStore = defineStore({
           }).value = token;
           this.isAuthenticated = true;
           this.dialog = true;
+          this.form.email = "";
           return true;
         } else {
           this.isAuthenticated = false;
           this.error.isError = true;
-          this.error.errorMessage = "ログインに失敗しました。";
+          this.error.errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
           console.error("Login failed");
           return false;
         }
       } catch (error) {
         this.isAuthenticated = false;
         this.error.isError = true;
-        this.error.errorMessage = "ログインに失敗しました。";
+        this.error.errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
           await handleErrorResponse(axiosError.response);
@@ -66,7 +67,6 @@ export const useAuthStore = defineStore({
         }
         return false;
       } finally {
-        this.form.email = "";
         this.form.password = "";
       }
     },
