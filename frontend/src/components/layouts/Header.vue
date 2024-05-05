@@ -16,9 +16,6 @@
             <p class="mr-4">TOP</p>
           </nuxt-link>
         </div>
-
-        <!-- <v-text-field v-model="seach" label="検索" single-line hide-details></v-text-field> -->
-        <!-- <v-icon @click="seachClick" class="pl-4 ma-2">mdi-magnify</v-icon> -->
         <v-app-bar-nav-icon @click="drawer = !drawer" class="mr-0 ml-auto"></v-app-bar-nav-icon>
       </v-container>
     </v-app-bar>
