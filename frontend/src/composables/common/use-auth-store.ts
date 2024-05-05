@@ -21,9 +21,7 @@ export const useAuthStore = defineStore({
     },
     dialog: false,
   }),
-  getters: {
-    // authedUser: (state) => state.user as User,
-  },
+  getters: {},
   actions: {
     /**
      * ログイン処理
@@ -92,7 +90,6 @@ export const useAuthStore = defineStore({
         });
         if (response.status === 200) {
           this.user = response.data;
-          console.log("User info:", this.user);
           return true;
         } else {
           this.logout();

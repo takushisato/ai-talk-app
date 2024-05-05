@@ -6,7 +6,7 @@
     </div>
     <div v-else>
       <div class="text-center">
-        <p>ログイン中です</p>
+        <p>{{ authStore.$state.user?.name }} さん</p>
         <br />
         <AuthLogoutButton />
       </div>
