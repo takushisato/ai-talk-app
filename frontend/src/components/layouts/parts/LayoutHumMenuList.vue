@@ -19,9 +19,19 @@ export default defineComponent({
   setup() {
     const product = [
       {
-        name: "AIに聞く",
+        name: "使い方",
         URL: "/",
-        icon: "mdi-ghost",
+        icon: "mdi-account-question-outline",
+      },
+      {
+        name: "利用規約",
+        URL: "/",
+        icon: "mdi-badge-account",
+      },
+      {
+        name: "プライバシーポリシー",
+        URL: "/",
+        icon: "mdi-book-edit-outline",
       },
     ];
     const settings = [
