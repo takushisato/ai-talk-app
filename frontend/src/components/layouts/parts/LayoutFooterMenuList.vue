@@ -10,7 +10,7 @@
         </nuxt-link>
       </v-btn>
       <v-col class="text-center mt-4" cols="12">
-        <strong>Ⓒ taksuhi sato 2024</strong>
+        <strong class="text-white">Ⓒ taksuhi sato 2024</strong>
       </v-col>
     </v-row>
   </v-footer>

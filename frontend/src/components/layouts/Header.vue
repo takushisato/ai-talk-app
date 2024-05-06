@@ -13,7 +13,7 @@
       <v-container fluid class="d-flex align-center headerContainer">
         <div>
           <nuxt-link to="/" style="text-decoration: none">
-            <p class="mr-auto ml-4">TOP</p>
+            <v-btn class="mr-auto ml-4 text-black hover:opacity-50">TOP</v-btn>
           </nuxt-link>
         </div>
         <v-app-bar-nav-icon @click="drawer = !drawer" class="mr-0 ml-auto"></v-app-bar-nav-icon>

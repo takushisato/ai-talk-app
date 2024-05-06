@@ -65,9 +65,11 @@ export default defineComponent({
 <style scoped>
 .link {
   width: 100%;
+  color: gray;
 }
 
 .link:hover {
   background: #f5f5f5;
+  color: black;
 }
 </style>
