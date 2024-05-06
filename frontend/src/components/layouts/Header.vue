@@ -12,7 +12,7 @@
     <v-app-bar app dark scroll-behavior="hide">
       <v-container fluid class="d-flex align-center headerContainer">
         <div>
-          <nuxt-link to="/">
+          <nuxt-link to="/" style="text-decoration: none">
             <p class="mr-auto ml-4">TOP</p>
           </nuxt-link>
         </div>

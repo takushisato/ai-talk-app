@@ -4,7 +4,7 @@
       <v-btn v-for="item in items" class="mx-2" color="white" rounded="xl" variant="text">
         <nuxt-link :to="`${item.URL}`" style="text-decoration: none" class="text-button text-textColor">
           <div class="d-flex link">
-            <v-icon class="text-sm-center my-auto ml-2" color="black">{{ item.icon }}</v-icon>
+            <v-icon class="text-sm-center my-auto ml-2" color="white">{{ item.icon }}</v-icon>
             <p class="rounded-lg px-2 text-white">{{ item.name }}</p>
           </div>
         </nuxt-link>
