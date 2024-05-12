@@ -1,8 +1,5 @@
 <template>
-  <div class="text-center w-100">
-    <p>auth</p>
-    <SettingAuthPage />
-  </div>
+  <SettingAuthPage />
 </template>
 <script lang="ts">
 import SettingAuthPage from "@/components/settings/auth/SettingAuthPage.vue";
