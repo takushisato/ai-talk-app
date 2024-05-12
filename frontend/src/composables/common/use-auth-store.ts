@@ -20,7 +20,6 @@ export const useAuthStore = defineStore({
       isError: false,
     },
     dialog: false,
-    resetPassWordDialog: false,
   }),
   getters: {},
   actions: {
@@ -40,13 +39,11 @@ export const useAuthStore = defineStore({
           this.isAuthenticated = true;
           this.dialog = true;
           this.updateUserAuthenticationStatus();
-          return true;
         } else {
           this.isAuthenticated = false;
           this.error.isError = true;
           this.error.errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
           console.error("Login failed");
-          return false;
         }
       } catch (error) {
         this.isAuthenticated = false;
@@ -58,7 +55,6 @@ export const useAuthStore = defineStore({
         } else {
           console.error("An error occurred:", axiosError.message);
         }
-        return false;
       } finally {
         this.form.password = "";
       }
@@ -91,7 +87,6 @@ export const useAuthStore = defineStore({
         });
         if (response.status === 200) {
           this.user = response.data;
-          return true;
         } else {
           this.logout();
         }
@@ -127,7 +122,7 @@ export const useAuthStore = defineStore({
         const hostURL = apiBaseUrl();
         const response: AxiosResponse = await axios.post(hostURL + "api/auth/users/reset_password/", { email: email });
         if (response.status === 200) {
-          this.resetPassWordDialog = true;
+          this.dialog = true;
         } else {
           this.error.isError = true;
           this.error.errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";

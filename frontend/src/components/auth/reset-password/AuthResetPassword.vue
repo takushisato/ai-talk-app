@@ -10,7 +10,7 @@
     ></v-text-field>
     <v-btn v-if="validationResult()" type="submit" @click="handleResetPassword">パスワードのリセットを希望する</v-btn>
     <CommonSnackBar v-model="authStore.$state.error.isError" :errorMessage="authStore.$state.error.errorMessage" />
-    <v-dialog v-model="authStore.$state.resetPassWordDialog" max-width="400">
+    <v-dialog v-model="authStore.$state.dialog" max-width="400">
       <v-card>
         <v-card-text>
           <p>ご登録のメールアドレスに再設定用のリンクを送信しました</p>
@@ -61,12 +61,11 @@ export default defineComponent({
      * 処理が正常に終了したらダイアログを閉じてTOPページへ遷移
      */
     function handleTopPageMove(): void {
-      authStore.$state.resetPassWordDialog = false;
+      authStore.$state.dialog = false;
       router.push("/");
     }
 
     return {
-      email: authStore.$state.form.email,
       authStore,
       handleResetPassword,
       validationResult,

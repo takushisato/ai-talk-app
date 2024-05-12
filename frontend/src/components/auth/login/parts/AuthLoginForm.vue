@@ -78,12 +78,7 @@ export default defineComponent({
         email: authStore.$state.form.email,
         password: authStore.$state.form.password,
       };
-      const isApiResult: boolean = await authStore.login(postData);
-      if (isApiResult) {
-        authStore.$state.dialog = true;
-      } else {
-        authStore.$state.error.isError = true;
-      }
+      await authStore.login(postData);
     }
 
     /**
