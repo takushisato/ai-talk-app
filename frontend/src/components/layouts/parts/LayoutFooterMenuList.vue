@@ -27,7 +27,7 @@ export default defineComponent({
       },
       {
         name: "各種設定",
-        URL: "/",
+        URL: "/settings",
         icon: "mdi-wrench",
       },
       {
