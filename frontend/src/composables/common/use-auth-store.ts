@@ -121,7 +121,7 @@ export const useAuthStore = defineStore({
       try {
         const hostURL = apiBaseUrl();
         const response: AxiosResponse = await axios.post(hostURL + "api/auth/users/reset_password/", { email: email });
-        if (response.status === 200) {
+        if (response.status === 204) {
           this.dialog = true;
         } else {
           this.error.isError = true;
