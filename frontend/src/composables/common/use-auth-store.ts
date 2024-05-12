@@ -20,6 +20,7 @@ export const useAuthStore = defineStore({
       isError: false,
     },
     dialog: false,
+    resetPassWordDialog: false,
   }),
   getters: {},
   actions: {
@@ -114,6 +115,33 @@ export const useAuthStore = defineStore({
         this.token = token;
         this.isAuthenticated = true;
         await this.updateUserAuthenticationStatus();
+      }
+    },
+
+    /**
+     * パスワードリセット処理
+     * TODO 動作確認未実施
+     */
+    async resetPassword(email: string) {
+      try {
+        const hostURL = apiBaseUrl();
+        const response: AxiosResponse = await axios.post(hostURL + "api/auth/users/reset_password/", { email: email });
+        if (response.status === 200) {
+          this.resetPassWordDialog = true;
+        } else {
+          this.error.isError = true;
+          this.error.errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
+          console.error("Reset password failed");
+        }
+      } catch (error) {
+        this.error.isError = true;
+        this.error.errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          await handleErrorResponse(axiosError.response);
+        } else {
+          console.error("An error occurred:", axiosError.message);
+        }
       }
     },
   },
