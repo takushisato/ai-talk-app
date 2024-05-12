@@ -1,8 +1,5 @@
 <template>
-  <div class="text-center w-100">
-    <p>setting</p>
-    <SettingIndexPage />
-  </div>
+  <SettingIndexPage />
 </template>
 <script lang="ts">
 import SettingIndexPage from "@/components/settings/SettingIndexPage.vue";
