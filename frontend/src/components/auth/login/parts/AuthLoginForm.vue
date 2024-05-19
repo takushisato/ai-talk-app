@@ -23,7 +23,6 @@
     </div>
     <br />
     <v-btn v-if="validationResult()" type="submit" @click="login()">ログインする</v-btn>
-    <CommonSnackBar v-model="authStore.$state.error.isError" :errorMessage="authStore.$state.error.errorMessage" />
     <v-dialog v-model="authStore.$state.dialog" max-width="400">
       <v-card>
         <v-card-text>

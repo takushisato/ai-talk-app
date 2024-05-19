@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { apiBaseUrl } from "~/utils/api-base-url";
 import { handleErrorResponse } from "~/domain/api/api-error-handler";
+import { useLayoutStore } from "./use-layout-store";
 import type { User } from "~/domain/auth/user";
 import type { LoginPostData, LoginResponse } from "~/domain/auth/login";
 import type { AxiosResponse, AxiosError } from "axios";
@@ -15,10 +16,6 @@ export const useAuthStore = defineStore({
     form: {
       email: "",
       password: "",
-    },
-    error: {
-      errorMessage: "",
-      isError: false,
     },
     dialog: false,
   }),
@@ -45,9 +42,10 @@ export const useAuthStore = defineStore({
           this.updateUserAuthenticationStatus();
         }
       } catch (error) {
+        const layoutStore = useLayoutStore();
         this.isAuthenticated = false;
-        this.error.isError = true;
-        this.error.errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
+        layoutStore.error.isError = true;
+        layoutStore.error.errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
           await handleErrorResponse(axiosError.response);
@@ -86,8 +84,9 @@ export const useAuthStore = defineStore({
           this.user = response.data;
         }
       } catch (error) {
-        this.error.isError = true; // TODO デフォルトのテンプレートに記載
-        this.error.errorMessage = "認証情報の期限が切れました。再度ログインしてください。";
+        const layoutStore = useLayoutStore();
+        layoutStore.error.isError = true; // TODO デフォルトのテンプレートに記載
+        layoutStore.error.errorMessage = "認証情報の期限が切れました。再度ログインしてください。";
         await this.logout();
       }
     },
@@ -116,14 +115,11 @@ export const useAuthStore = defineStore({
         });
         if (response.status === 204) {
           this.dialog = true;
-        } else {
-          this.error.isError = true;
-          this.error.errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
-          console.error("Reset password failed");
         }
       } catch (error) {
-        this.error.isError = true;
-        this.error.errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
+        const layoutStore = useLayoutStore();
+        layoutStore.error.isError = true;
+        layoutStore.error.errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
           await handleErrorResponse(axiosError.response);
@@ -155,14 +151,11 @@ export const useAuthStore = defineStore({
         );
         if (response.status === 200) {
           this.dialog = true;
-        } else {
-          this.error.isError = true;
-          this.error.errorMessage = "パスワード変更に失敗しました。";
-          console.error("Set password failed");
         }
       } catch (error) {
-        this.error.isError = true;
-        this.error.errorMessage = "パスワード変更に失敗しました。";
+        const layoutStore = useLayoutStore();
+        layoutStore.error.isError = true;
+        layoutStore.error.errorMessage = "パスワード変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
           await handleErrorResponse(axiosError.response);
@@ -194,14 +187,11 @@ export const useAuthStore = defineStore({
         );
         if (response.status === 200) {
           this.dialog = true;
-        } else {
-          this.error.isError = true;
-          this.error.errorMessage = "メールアドレス変更に失敗しました。";
-          console.error("Set email failed");
         }
       } catch (error) {
-        this.error.isError = true;
-        this.error.errorMessage = "メールアドレス変更に失敗しました。";
+        const layoutStore = useLayoutStore();
+        layoutStore.error.isError = true;
+        layoutStore.error.errorMessage = "メールアドレス変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
           await handleErrorResponse(axiosError.response);
