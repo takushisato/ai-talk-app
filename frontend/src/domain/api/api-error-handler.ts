@@ -1,6 +1,6 @@
 import type { AxiosResponse } from "axios";
 
-export async function handleErrorResponse<Data>(response: AxiosResponse<Data>): Promise<Data> {
+export async function handleErrorResponse<Data>(response: AxiosResponse<Data>): Promise<void> {
   if (response.status === 401) {
     throw new Error("Unauthorized");
   } else if (response.status === 400) {
@@ -18,6 +18,4 @@ export async function handleErrorResponse<Data>(response: AxiosResponse<Data>): 
   if (!response.data) {
     throw new Error("Data is empty");
   }
-
-  return response.data;
 }

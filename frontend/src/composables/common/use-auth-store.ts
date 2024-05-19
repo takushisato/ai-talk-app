@@ -2,9 +2,10 @@ import { defineStore } from "pinia";
 import { apiBaseUrl } from "~/utils/api-base-url";
 import { handleErrorResponse } from "~/domain/api/api-error-handler";
 import type { User } from "~/domain/auth/user";
-import type { login } from "~/domain/auth/login";
+import type { LoginPostData, LoginResponse } from "~/domain/auth/login";
 import type { AxiosResponse, AxiosError } from "axios";
 import axios from "axios";
+
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
@@ -26,10 +27,13 @@ export const useAuthStore = defineStore({
     /**
      * ログイン処理
      */
-    async login(postData: login) {
+    async login(postData: LoginPostData) {
       try {
         const hostURL = apiBaseUrl();
-        const response: AxiosResponse = await axios.post(hostURL + "api_token_auth/", postData);
+        const response: AxiosResponse<LoginResponse> = await axios.post<LoginResponse>(
+          hostURL + "api_token_auth/",
+          postData
+        );
         if (response.status === 200) {
           this.token = response.data.auth_token;
           useCookie("token", {
@@ -39,11 +43,6 @@ export const useAuthStore = defineStore({
           this.isAuthenticated = true;
           this.dialog = true;
           this.updateUserAuthenticationStatus();
-        } else {
-          this.isAuthenticated = false;
-          this.error.isError = true;
-          this.error.errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
-          console.error("Login failed");
         }
       } catch (error) {
         this.isAuthenticated = false;
@@ -52,8 +51,6 @@ export const useAuthStore = defineStore({
         const axiosError = error as AxiosError;
         if (axiosError.response) {
           await handleErrorResponse(axiosError.response);
-        } else {
-          console.error("An error occurred:", axiosError.message);
         }
       } finally {
         this.form.password = "";
@@ -63,7 +60,7 @@ export const useAuthStore = defineStore({
     /**
      * ログアウト処理
      */
-    logout() {
+    logout(): void {
       useCookie("token").value = null;
       this.isAuthenticated = false;
       this.token = "";
@@ -77,35 +74,29 @@ export const useAuthStore = defineStore({
      *
      * (取得できればログイン、tokenに問題がありユーザー情報が取得できない場合はログアウトになる）
      */
-    async updateUserAuthenticationStatus() {
+    async updateUserAuthenticationStatus(): Promise<void> {
       try {
         const hostURL = apiBaseUrl();
-        const response: AxiosResponse = await axios.get(hostURL + "api/auth/users/me/", {
+        const response: AxiosResponse<User> = await axios.get<User>(hostURL + "api/auth/users/me/", {
           headers: {
             Authorization: "Token " + this.token,
           },
         });
         if (response.status === 200) {
           this.user = response.data;
-        } else {
-          this.logout();
         }
       } catch (error) {
-        const axiosError = error as AxiosError;
-        if (axiosError.response) {
-          await handleErrorResponse(axiosError.response);
-        } else {
-          console.error("getUserInfo error:", axiosError.message);
-        }
-        this.logout();
+        this.error.isError = true; // TODO デフォルトのテンプレートに記載
+        this.error.errorMessage = "認証情報の期限が切れました。再度ログインしてください。";
+        await this.logout();
       }
     },
 
     /**
      * Cookieからトークンを取得してユーザー情報を取得
      */
-    async authenticateFromCookie() {
-      const token = await useCookie("token").value;
+    async authenticateFromCookie(): Promise<void> {
+      const token: string | null | undefined = await useCookie("token").value;
       if (token) {
         this.token = token;
         this.isAuthenticated = true;
@@ -120,7 +111,9 @@ export const useAuthStore = defineStore({
     async resetPassword(email: string) {
       try {
         const hostURL = apiBaseUrl();
-        const response: AxiosResponse = await axios.post(hostURL + "api/auth/users/reset_password/", { email: email });
+        const response: AxiosResponse<string> = await axios.post<string>(hostURL + "api/auth/users/reset_password/", {
+          email: email,
+        });
         if (response.status === 204) {
           this.dialog = true;
         } else {

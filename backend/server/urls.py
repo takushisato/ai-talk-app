@@ -23,7 +23,6 @@ urlpatterns = [
     path('ai_talk/get_thread/', ThreadList.as_view()),
     path('ai_talk/get_talks/<str:pk>/', QuestionAndAnswerList.as_view()),
     path('api_token_auth/', CustomTokenCreateView.as_view()),
-
 ]
 
 if settings.DEBUG:

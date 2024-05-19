@@ -38,13 +38,14 @@
       </v-card>
     </v-dialog>
   </div>
+  <div class="h-screen"></div>
 </template>
 <script lang="ts">
 import { useAuthStore } from "@/composables/common/use-auth-store";
 import { requiredValid, mailValid, passwordLengthValid } from "@/utils/validation";
 import { formEmailValid, formPasswordValid } from "@/utils/validation";
 import CommonSnackBar from "~/components/common/CommonSnackBar.vue";
-import type { login } from "@/domain/auth/login";
+import type { LoginPostData } from "@/domain/auth/login";
 export default defineComponent({
   name: "AuthLoginForm",
   components: {
@@ -74,7 +75,7 @@ export default defineComponent({
      * @returns
      */
     async function login(): Promise<void> {
-      const postData: login = {
+      const postData: LoginPostData = {
         email: authStore.$state.form.email,
         password: authStore.$state.form.password,
       };
