@@ -1,21 +1,26 @@
-import type { AxiosResponse } from "axios";
+import {
+  BadRequestException,
+  ClientException,
+  ConflictException,
+  NotFoundException,
+  ServerException,
+  UnauthorizedException,
+} from "~/domain/common/exceptions/api-exceptions";
 
-export async function handleErrorResponse<Data>(response: AxiosResponse<Data>): Promise<void> {
-  if (response.status === 401) {
-    throw new Error("Unauthorized");
-  } else if (response.status === 400) {
-    throw new Error("Bad Request");
-  } else if (response.status === 404) {
-    throw new Error("Not Found");
-  } else if (response.status === 409) {
-    throw new Error("Conflict");
-  } else if (response.status >= 402 && response.status < 500) {
-    throw new Error("Client Error");
-  } else if (response.status >= 500) {
-    throw new Error("Server Error");
-  }
-
-  if (!response.data) {
-    throw new Error("Data is empty");
+export function handleErrorResponse(status: number) {
+  if (status === 401) {
+    throw new UnauthorizedException(status);
+  } else if (status === 400) {
+    throw new BadRequestException(status);
+  } else if (status === 404) {
+    throw new NotFoundException(status);
+  } else if (status === 409) {
+    throw new ConflictException(status);
+  } else if (status >= 402 && status < 500) {
+    console.error(status);
+    throw new ClientException(status);
+  } else if (status >= 500) {
+    console.error(status);
+    throw new ServerException(status);
   }
 }

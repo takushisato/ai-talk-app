@@ -42,11 +42,12 @@ export const useAuthStore = defineStore({
       } catch (error) {
         const layoutStore = useLayoutStore();
         this.isAuthenticated = false;
+        // TODO LayoutStore関係をhandleErrorResponseに移動
         layoutStore.error.isError = true;
         layoutStore.error.errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          await handleErrorResponse(axiosError.response);
+          handleErrorResponse(axiosError.response.status);
         }
       } finally {
         this.form.password = "";
@@ -84,6 +85,10 @@ export const useAuthStore = defineStore({
         layoutStore.error.isError = true; // TODO デフォルトのテンプレートに記載
         layoutStore.error.errorMessage = "認証情報の期限が切れました。再度ログインしてください。";
         await this.logout();
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          handleErrorResponse(axiosError.response.status);
+        }
       }
     },
 
@@ -116,9 +121,7 @@ export const useAuthStore = defineStore({
         layoutStore.error.errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          await handleErrorResponse(axiosError.response);
-        } else {
-          console.error("An error occurred:", axiosError.message);
+          handleErrorResponse(axiosError.response.status);
         }
       }
     },
@@ -150,9 +153,7 @@ export const useAuthStore = defineStore({
         layoutStore.error.errorMessage = "パスワード変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          await handleErrorResponse(axiosError.response);
-        } else {
-          console.error("An error occurred:", axiosError.message);
+          handleErrorResponse(axiosError.response.status);
         }
       }
     },
@@ -184,9 +185,7 @@ export const useAuthStore = defineStore({
         layoutStore.error.errorMessage = "メールアドレス変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          await handleErrorResponse(axiosError.response);
-        } else {
-          console.error("An error occurred:", axiosError.message);
+          handleErrorResponse(axiosError.response.status);
         }
       }
     },
