@@ -31,16 +31,14 @@ export const useAuthStore = defineStore({
           hostURL + "api_token_auth/",
           postData
         );
-        if (response.status === 200) {
-          this.token = response.data.auth_token;
-          useCookie("token", {
-            secure: true,
-            maxAge: 86400,
-          }).value = this.token;
-          this.isAuthenticated = true;
-          this.dialog = true;
-          this.updateUserAuthenticationStatus();
-        }
+        this.token = response.data.auth_token;
+        useCookie("token", {
+          secure: true,
+          maxAge: 86400,
+        }).value = this.token;
+        this.isAuthenticated = true;
+        this.dialog = true;
+        this.updateUserAuthenticationStatus();
       } catch (error) {
         const layoutStore = useLayoutStore();
         this.isAuthenticated = false;
@@ -80,9 +78,7 @@ export const useAuthStore = defineStore({
             Authorization: "Token " + this.token,
           },
         });
-        if (response.status === 200) {
-          this.user = response.data;
-        }
+        this.user = response.data;
       } catch (error) {
         const layoutStore = useLayoutStore();
         layoutStore.error.isError = true; // TODO デフォルトのテンプレートに記載
@@ -113,9 +109,7 @@ export const useAuthStore = defineStore({
         const response: AxiosResponse<string> = await axios.post<string>(hostURL + "api/auth/users/reset_password/", {
           email: email,
         });
-        if (response.status === 204) {
-          this.dialog = true;
-        }
+        this.dialog = true;
       } catch (error) {
         const layoutStore = useLayoutStore();
         layoutStore.error.isError = true;
@@ -149,9 +143,7 @@ export const useAuthStore = defineStore({
             },
           }
         );
-        if (response.status === 200) {
-          this.dialog = true;
-        }
+        this.dialog = true;
       } catch (error) {
         const layoutStore = useLayoutStore();
         layoutStore.error.isError = true;
@@ -185,9 +177,7 @@ export const useAuthStore = defineStore({
             },
           }
         );
-        if (response.status === 200) {
-          this.dialog = true;
-        }
+        this.dialog = true;
       } catch (error) {
         const layoutStore = useLayoutStore();
         layoutStore.error.isError = true;
