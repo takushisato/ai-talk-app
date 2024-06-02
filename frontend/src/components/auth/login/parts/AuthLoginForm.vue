@@ -37,7 +37,6 @@
       </v-card>
     </v-dialog>
   </div>
-  <div class="h-screen"></div>
 </template>
 <script lang="ts">
 import { useAuthStore } from "@/composables/common/use-auth-store";
