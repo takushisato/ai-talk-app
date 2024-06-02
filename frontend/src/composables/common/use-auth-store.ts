@@ -42,7 +42,7 @@ export const useAuthStore = defineStore({
         this.isAuthenticated = false;
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+          // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
           const errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
           handleErrorResponse(axiosError.response.status, errorMessage);
         }
@@ -78,7 +78,7 @@ export const useAuthStore = defineStore({
         });
         this.user = response.data;
       } catch (error) {
-        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
         const errorMessage = "認証情報の期限が切れました。再度ログインしてください。";
         await this.logout();
         const axiosError = error as AxiosError;
@@ -112,7 +112,7 @@ export const useAuthStore = defineStore({
         });
         this.dialog = true;
       } catch (error) {
-        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
         const errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
@@ -143,7 +143,7 @@ export const useAuthStore = defineStore({
         );
         this.dialog = true;
       } catch (error) {
-        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
         const errorMessage = "パスワード変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
@@ -174,7 +174,7 @@ export const useAuthStore = defineStore({
         );
         this.dialog = true;
       } catch (error) {
-        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
         const errorMessage = "メールアドレス変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
