@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { apiBaseUrl } from "~/utils/api-base-url";
-import { handleErrorResponse } from "~/domain/api/api-error-handler";
+import { processErrorResponse } from "~/domain/api/process-error-response";
 import type { User } from "~/domain/auth/user";
 import type { LoginPostData, LoginResponse } from "~/domain/auth/login";
 import type { AxiosResponse, AxiosError } from "axios";
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore({
         if (axiosError.response) {
           // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
           const errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
-          handleErrorResponse(axiosError.response.status, errorMessage);
+          processErrorResponse(axiosError.response.status, errorMessage);
         }
       } finally {
         this.form.password = "";
@@ -83,7 +83,7 @@ export const useAuthStore = defineStore({
         await this.logout();
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          handleErrorResponse(axiosError.response.status, errorMessage);
+          processErrorResponse(axiosError.response.status, errorMessage);
         }
       }
     },
@@ -116,7 +116,7 @@ export const useAuthStore = defineStore({
         const errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          handleErrorResponse(axiosError.response.status, errorMessage);
+          processErrorResponse(axiosError.response.status, errorMessage);
         }
       }
     },
@@ -147,7 +147,7 @@ export const useAuthStore = defineStore({
         const errorMessage = "パスワード変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          handleErrorResponse(axiosError.response.status, errorMessage);
+          processErrorResponse(axiosError.response.status, errorMessage);
         }
       }
     },
@@ -178,7 +178,7 @@ export const useAuthStore = defineStore({
         const errorMessage = "メールアドレス変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          handleErrorResponse(axiosError.response.status, errorMessage);
+          processErrorResponse(axiosError.response.status, errorMessage);
         }
       }
     },

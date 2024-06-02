@@ -8,7 +8,7 @@ import {
 } from "~/domain/common/exceptions/api-exceptions";
 import { useLayoutStore } from "~/composables/common/use-layout-store";
 
-export function handleErrorResponse(status: number, message: string) {
+export function processErrorResponse(status: number, message: string) {
   const layoutStore = useLayoutStore();
   if (status === 401) {
     layoutStore.error.isError = true;
