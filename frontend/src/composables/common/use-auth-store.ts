@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { apiBaseUrl } from "~/utils/api-base-url";
 import { handleErrorResponse } from "~/domain/api/api-error-handler";
-import { useLayoutStore } from "./use-layout-store";
 import type { User } from "~/domain/auth/user";
 import type { LoginPostData, LoginResponse } from "~/domain/auth/login";
 import type { AxiosResponse, AxiosError } from "axios";
@@ -40,14 +39,12 @@ export const useAuthStore = defineStore({
         this.dialog = true;
         this.updateUserAuthenticationStatus();
       } catch (error) {
-        const layoutStore = useLayoutStore();
         this.isAuthenticated = false;
-        // TODO LayoutStore関係をhandleErrorResponseに移動
-        layoutStore.error.isError = true;
-        layoutStore.error.errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          handleErrorResponse(axiosError.response.status);
+          // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+          const errorMessage = "ログインに失敗しました。パスワードとメールアドレスを確認してください。";
+          handleErrorResponse(axiosError.response.status, errorMessage);
         }
       } finally {
         this.form.password = "";
@@ -81,13 +78,12 @@ export const useAuthStore = defineStore({
         });
         this.user = response.data;
       } catch (error) {
-        const layoutStore = useLayoutStore();
-        layoutStore.error.isError = true; // TODO デフォルトのテンプレートに記載
-        layoutStore.error.errorMessage = "認証情報の期限が切れました。再度ログインしてください。";
+        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+        const errorMessage = "認証情報の期限が切れました。再度ログインしてください。";
         await this.logout();
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          handleErrorResponse(axiosError.response.status);
+          handleErrorResponse(axiosError.response.status, errorMessage);
         }
       }
     },
@@ -116,12 +112,11 @@ export const useAuthStore = defineStore({
         });
         this.dialog = true;
       } catch (error) {
-        const layoutStore = useLayoutStore();
-        layoutStore.error.isError = true;
-        layoutStore.error.errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
+        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+        const errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          handleErrorResponse(axiosError.response.status);
+          handleErrorResponse(axiosError.response.status, errorMessage);
         }
       }
     },
@@ -148,12 +143,11 @@ export const useAuthStore = defineStore({
         );
         this.dialog = true;
       } catch (error) {
-        const layoutStore = useLayoutStore();
-        layoutStore.error.isError = true;
-        layoutStore.error.errorMessage = "パスワード変更に失敗しました。";
+        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+        const errorMessage = "パスワード変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          handleErrorResponse(axiosError.response.status);
+          handleErrorResponse(axiosError.response.status, errorMessage);
         }
       }
     },
@@ -180,12 +174,11 @@ export const useAuthStore = defineStore({
         );
         this.dialog = true;
       } catch (error) {
-        const layoutStore = useLayoutStore();
-        layoutStore.error.isError = true;
-        layoutStore.error.errorMessage = "メールアドレス変更に失敗しました。";
+        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なためて入力している。
+        const errorMessage = "メールアドレス変更に失敗しました。";
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          handleErrorResponse(axiosError.response.status);
+          handleErrorResponse(axiosError.response.status, errorMessage);
         }
       }
     },
