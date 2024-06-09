@@ -86,9 +86,16 @@ export const formPasswordValid = (password: string) => {
  * VuetifyのFormのsubmitボタン表示管理用のバリデーション
  * 確認用passwordを判定します
  */
-export const formRePasswordValid = (rePassword: any) => {
-  if (rePassword.value.length >= 1) {
+export const formRePasswordValid = (rePassword: string) => {
+  // rePassword が undefined または null でないことを確認
+  if (!rePassword || typeof rePassword !== "string") {
+    return { result: false };
+  }
+  // パスワードの長さが1以上であるか確認
+  if (rePassword.length >= 1) {
     return { result: true };
+  } else {
+    return { result: false };
   }
 };
 
@@ -96,8 +103,8 @@ export const formRePasswordValid = (rePassword: any) => {
  * VuetifyのFormのsubmitボタン表示管理用のバリデーション
  * passwordと確認用passwordの一致を判定します
  */
-export const formRePasswordComparison = (password: any, rePassword: any) => {
-  if (password.value == rePassword.value) {
+export const formRePasswordComparison = (password: string, rePassword: string) => {
+  if (password == rePassword) {
     return { result: true };
   }
 };

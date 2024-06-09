@@ -78,7 +78,7 @@ export default defineComponent({
       const passwordResult = formPasswordValid(new_password.value);
       const rePasswordResult = formRePasswordValid(re_new_password.value);
       const PasswordComparisonResult = formRePasswordComparison(new_password.value, re_new_password.value);
-
+      console.log(passwordResult, rePasswordResult, PasswordComparisonResult);
       if (passwordResult && rePasswordResult && PasswordComparisonResult) {
         return true;
       } else {

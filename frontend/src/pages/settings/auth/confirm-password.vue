@@ -6,13 +6,19 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
+import SettingsConfirmPasswordSetForm from "~/components/settings/auth/ConfirmPasswordSetForm.vue";
 
 export default defineComponent({
   name: "ConfirmPassword",
+  components: {
+    SettingsConfirmPasswordSetForm,
+  },
   setup() {
+    let uid = ref("");
+    let token = ref("");
     const route = useRoute;
-    const uid = ref(route().query.uid);
-    const token = ref(route().query.token);
+    // uid.value = route().query.uid as string;
+    // token.value = route().query.token as string;
 
     return {
       uid,
