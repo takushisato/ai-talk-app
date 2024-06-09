@@ -187,7 +187,7 @@ DJOSER = {
     # メールアドレスリセット完了用URL（モデルを変更しているためユーザーネームではない）
     'USERNAME_RESET_CONFIRM_URL': 'settings/auth/confirm-email/?uid={uid}&token={token}',
     # パスワードリセット完了用URL
-    'PASSWORD_RESET_CONFIRM_URL': 'settings//auth/confirm-password/?uid={uid}&token={token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'settings/auth/confirm-password/?uid={uid}&token={token}',
     # カスタムユーザー用シリアライザー
     'SERIALIZERS': {
         'user_create': 'apps.account.serializers.UserSerializer',
