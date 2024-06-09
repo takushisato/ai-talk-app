@@ -1,7 +1,6 @@
 <template>
   <div>
     <h3>パスワードの再設定はこちら</h3>
-    <!-- TODO 2つのパスワードが一致しないと送信できない様にバリデーションをつける事 -->
     <v-text-field
       label="【必須】新しいパスワード"
       variant="solo"
@@ -37,6 +36,7 @@
 import { defineComponent, ref } from "vue";
 import { requiredValid, passwordLengthValid } from "@/utils/validation";
 import { formPasswordValid, formRePasswordValid, formRePasswordComparison } from "@/utils/validation";
+import { useAuthStore } from "~/composables/common/use-auth-store";
 export default defineComponent({
   name: "ConfirmPasswordSetForm",
   props: {
@@ -91,30 +91,10 @@ export default defineComponent({
      * （ログイン不要）
      * backendから送られてきたリンクからパスワード変更
      */
-    async function passwordConfirm(this: {
-      new_password: import("vue").Ref<string>;
-      re_new_password: import("vue").Ref<string>;
-      passwordConfirm: () => Promise<void>;
-    }) {
-      // const postData = {
-      //   uid: props.uid,
-      //   token: props.token,
-      //   new_password: this.new_password,
-      //   re_new_password: this.re_new_password,
-      // };
-      // const { data, error } = await useFetch(hostURL + "/api/v1/auth/users/reset_password_confirm/", {
-      //   method: "POST",
-      //   body: postData,
-      // });
-      // if (error.value == null) {
-      //   dialog.value = true;
-      // } else {
-      //   // backendからのエラーが来た場合は、SnackBarで処理
-      //   errorResult.value = true;
-      //   const errorValue: any = error.value;
-      //   errorMessages = errorValue.data;
-      // }
-      console.log(props.uid, props.token, new_password.value, re_new_password.value);
+    async function passwordConfirm() {
+      const authStore = useAuthStore();
+      authStore.resetPasswordConfirm(props.uid, props.token, new_password.value);
+      console.log(props.uid, props.token);
     }
 
     /**

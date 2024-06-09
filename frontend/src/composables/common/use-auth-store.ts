@@ -122,6 +122,36 @@ export const useAuthStore = defineStore({
     },
 
     /**
+     * パスワード変更確認処理
+     * TODO 動作確認未実施
+     */
+    async resetPasswordConfirm(uid: string, token: string, new_password: string) {
+      try {
+        const hostURL = apiBaseUrl();
+        const response: AxiosResponse<string> = await axios.post<string>(
+          hostURL + "api/auth/users/reset_password_confirm/",
+          {
+            uid: uid,
+            token: token,
+            new_password: new_password,
+          }
+        );
+        // TODO 正常雨処理の場合の処理を追加する
+        // TODO dialogの状態を個別にする。同じ名前を使うのはやめる
+        console.log(response);
+      } catch (error) {
+        // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
+        const errorMessage =
+          "パスワードリセットに失敗しました。パスワードが簡単すぎるか、サービスに障害が起きている可能性があります。暫く時間を置いて再度お試しください";
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        if (axiosError.response) {
+          processErrorResponse(axiosError.response.status, errorMessage);
+        }
+      }
+    },
+
+    /**
      * パスワード変更処理
      * TODO 動作確認未実施
      */

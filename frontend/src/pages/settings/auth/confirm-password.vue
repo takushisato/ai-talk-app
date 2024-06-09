@@ -17,8 +17,8 @@ export default defineComponent({
     let uid = ref("");
     let token = ref("");
     const route = useRoute;
-    // uid.value = route().query.uid as string;
-    // token.value = route().query.token as string;
+    uid.value = route().query.uid as string;
+    token.value = route().query.token as string;
 
     return {
       uid,
