@@ -9,7 +9,6 @@
       :rules="[requiredValid, mailValid]"
     ></v-text-field>
     <v-btn v-if="validationResult()" type="submit" @click="handleResetPassword">パスワードのリセットを希望する</v-btn>
-    <CommonSnackBar v-model="authStore.$state.error.isError" :errorMessage="authStore.$state.error.errorMessage" />
     <v-dialog v-model="authStore.$state.dialog" max-width="400">
       <v-card>
         <v-card-text>
