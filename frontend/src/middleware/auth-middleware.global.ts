@@ -4,7 +4,13 @@ export default defineNuxtRouteMiddleware(async (to, _from) => {
   const authStore = useAuthStore();
 
   // 認証が不要なページのパス
-  const noAuthRequired = ["/", "/auth/login", "/settings/auth/reset-password", "/settings/auth/confirm-password"];
+  const noAuthRequired = [
+    "/",
+    "/auth/login",
+    "/settings/auth/reset-password",
+    "/settings/auth/confirm-password",
+    "/auth/register",
+  ];
 
   // オートログイン処理
   // URLのパスを正規化（末尾のスラッシュを削除し、重複するスラッシュを単一化）
