@@ -16,6 +16,11 @@ export const useAuthStore = defineStore({
       email: "",
       password: "",
     },
+    createForm: {
+      email: "",
+      password: "",
+      password2: "",
+    },
     dialog: false,
   }),
   getters: {},
