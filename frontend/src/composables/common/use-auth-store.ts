@@ -3,6 +3,7 @@ import { apiBaseUrl } from "~/utils/api-base-url";
 import { processErrorResponse } from "~/domain/api/process-error-response";
 import type { User } from "~/domain/auth/user";
 import type { LoginPostData, LoginResponse } from "~/domain/auth/login";
+import type { CreateUserPostData } from "~/domain/auth/create-user";
 import type { AxiosResponse, AxiosError } from "axios";
 import axios from "axios";
 
@@ -17,14 +18,37 @@ export const useAuthStore = defineStore({
       password: "",
     },
     createForm: {
+      name: "",
       email: "",
       password: "",
-      password2: "",
+      re_password: "",
     },
     dialog: false,
   }),
   getters: {},
   actions: {
+    /**
+     * 会員登録
+     */
+    async createUser(postData: CreateUserPostData) {
+      try {
+        // TODO ローディング処理を追加する
+        const hostURL = apiBaseUrl();
+        const response: AxiosResponse = await axios.post(hostURL + "api/auth/users/", postData);
+        console.log(response);
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response) {
+          // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
+          const errorMessage = "会員登録に失敗しました。パスワードとメールアドレスを確認してください。";
+          processErrorResponse(axiosError.response.status, errorMessage);
+        }
+      } finally {
+        this.createForm.password = "";
+        this.createForm.re_password = "";
+      }
+    },
+
     /**
      * ログイン処理
      */
