@@ -23,6 +23,12 @@ export const useAuthStore = defineStore({
       password: "",
       re_password: "",
     },
+    confirmPasswordForm: {
+      new_password: "",
+      re_new_password: "",
+      current_password: "",
+    },
+    confirmPasswordFormDialog: false,
     dialog: false,
   }),
   getters: {},
@@ -167,6 +173,7 @@ export const useAuthStore = defineStore({
         );
         // TODO 正常雨処理の場合の処理を追加する
         // TODO dialogの状態を個別にする。同じ名前を使うのはやめる
+        this.$state.confirmPasswordFormDialog = true;
         console.log(response);
       } catch (error) {
         // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。

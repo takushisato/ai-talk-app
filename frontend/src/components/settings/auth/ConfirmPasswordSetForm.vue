@@ -1,24 +1,17 @@
 <template>
+  <!-- ログイン画面の「パスワードを忘れた方はこちら」からパスワードを変更するコンポーネント -->
   <div>
     <h3>パスワードの再設定はこちら</h3>
-    <v-text-field
-      label="【必須】新しいパスワード"
-      variant="solo"
-      type="password"
-      v-model="new_password"
-      :rules="[requiredValid, passwordLengthValid]"
-    ></v-text-field>
-    <v-text-field
-      label="【必須】新しいパスワード（確認用）"
-      variant="solo"
-      type="password"
-      v-model="re_new_password"
-      :rules="[requiredValid, passwordComparisonValid]"
-    ></v-text-field>
+    <v-text-field label="【必須】新しいパスワード" variant="solo" type="password"
+      v-model="authStore.$state.confirmPasswordForm.new_password"
+      :rules="[requiredValid, passwordLengthValid]"></v-text-field>
+    <v-text-field label="【必須】新しいパスワード（確認用）" variant="solo" type="password"
+      v-model="authStore.$state.confirmPasswordForm.re_new_password"
+      :rules="[requiredValid, passwordComparisonValid]"></v-text-field>
     <v-btn v-if="validationResult()" type="submit" @click="passwordConfirm()">このパスワードにする</v-btn>
     <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" />
 
-    <v-dialog v-model="dialog" max-width="400">
+    <v-dialog v-model="authStore.$state.confirmPasswordFormDialog" max-width="400">
       <v-card>
         <v-card-text>
           <p>パスワードの再設定が完了しました。パスワードの紛失にお気を付けください</p>
@@ -50,9 +43,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const authStore = useAuthStore();
     const router = useRouter();
-    const new_password: globalThis.Ref<string> = ref("");
-    const re_new_password: globalThis.Ref<string> = ref("");
     let dialog: globalThis.Ref<boolean> = ref(false);
     let errorMessages: any = [];
     let errorResult: globalThis.Ref<boolean> = ref(false);
@@ -63,7 +55,7 @@ export default defineComponent({
      * 別ファイルに定義して引数でpasswordとrePasswordを渡すと何故か上手く読み込めないため、ここで定義
      */
     const passwordComparisonValid = () => {
-      if (new_password.value != re_new_password.value) {
+      if (authStore.$state.confirmPasswordForm.new_password != authStore.$state.confirmPasswordForm.re_new_password) {
         return "２つのパスワードが一致しません。";
       } else {
         return false;
@@ -74,10 +66,10 @@ export default defineComponent({
      * バリデーションの結果、問題がなければtrue、問題があればfalseを返します
      * Formの送信ボタンの表示と非表示の判定をリアクティブに行っています
      */
-    function validationResult() {
-      const passwordResult = formPasswordValid(new_password.value);
-      const rePasswordResult = formRePasswordValid(re_new_password.value);
-      const PasswordComparisonResult = formRePasswordComparison(new_password.value, re_new_password.value);
+    function validationResult(): boolean {
+      const passwordResult = formPasswordValid(authStore.$state.confirmPasswordForm.new_password);
+      const rePasswordResult = formRePasswordValid(authStore.$state.confirmPasswordForm.re_new_password);
+      const PasswordComparisonResult = formRePasswordComparison(authStore.$state.confirmPasswordForm.new_password, authStore.$state.confirmPasswordForm.re_new_password);
       console.log(passwordResult, rePasswordResult, PasswordComparisonResult);
       if (passwordResult && rePasswordResult && PasswordComparisonResult) {
         return true;
@@ -91,10 +83,8 @@ export default defineComponent({
      * （ログイン不要）
      * backendから送られてきたリンクからパスワード変更
      */
-    async function passwordConfirm() {
-      const authStore = useAuthStore();
-      authStore.resetPasswordConfirm(props.uid, props.token, new_password.value);
-      console.log(props.uid, props.token);
+    async function passwordConfirm(): Promise<void> {
+      authStore.resetPasswordConfirm(props.uid, props.token, authStore.$state.confirmPasswordForm.new_password);
     }
 
     /**
@@ -114,14 +104,13 @@ export default defineComponent({
     }
 
     return {
-      new_password,
-      re_new_password,
+      authStore,
+      dialog,
+      errorResult,
+      errorMessages,
       validationResult,
       passwordConfirm,
-      dialog,
       topPageMove,
-      errorMessages,
-      errorResult,
       closeSnack,
       passwordComparisonValid,
     };
