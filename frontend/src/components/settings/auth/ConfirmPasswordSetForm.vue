@@ -84,7 +84,7 @@ export default defineComponent({
      * backendから送られてきたリンクからパスワード変更
      */
     async function passwordConfirm(): Promise<void> {
-      authStore.resetPasswordConfirm(props.uid, props.token, authStore.$state.confirmPasswordForm.new_password);
+      authStore.resetPasswordConfirm(props.uid, props.token);
     }
 
     /**
