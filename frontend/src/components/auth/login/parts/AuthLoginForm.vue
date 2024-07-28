@@ -13,7 +13,7 @@
     </div>
     <br />
     <v-btn v-if="validationResult()" type="submit" @click="login()">ログインする</v-btn>
-    <v-dialog v-model="authStore.$state.dialog" max-width="400">
+    <v-dialog v-model="authStore.$state.loginSuccessDialog" max-width="400">
       <v-card>
         <v-card-text>
           <p>ログインしました</p>
@@ -59,8 +59,6 @@ export default defineComponent({
 
     /**
      * authStateからログイン
-     * @param state
-     * @returns
      */
     async function login(): Promise<void> {
       const postData: LoginPostData = {
@@ -74,7 +72,7 @@ export default defineComponent({
      * 処理が正常に終了したらダイアログを閉じてTOPページへ遷移
      */
     function topPageMove(): void {
-      authStore.$state.dialog = false;
+      authStore.$state.loginSuccessDialog = false;
       router.push("/");
     }
 

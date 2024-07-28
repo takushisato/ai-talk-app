@@ -32,7 +32,10 @@ export const useAuthStore = defineStore({
       current_password: "",
     },
     confirmPasswordFormDialog: false,
-    dialog: false,
+    loginSuccessDialog: false,
+    resetPasswordSuccessDialog: false,
+    setPasswordSuccessDialog: false,
+    setEmailSuccessDialog: false,
   }),
   getters: {},
   actions: {
@@ -74,7 +77,7 @@ export const useAuthStore = defineStore({
           maxAge: 86400,
         }).value = this.token;
         this.isAuthenticated = true;
-        this.dialog = true;
+        this.loginSuccessDialog = true;
         this.updateUserAuthenticationStatus();
       } catch (error) {
         this.isAuthenticated = false;
@@ -97,8 +100,6 @@ export const useAuthStore = defineStore({
       this.isAuthenticated = false;
       this.token = "";
       this.user = null;
-      // this.form.email = "";
-      // this.form.password = "";
     },
 
     /**
@@ -148,7 +149,7 @@ export const useAuthStore = defineStore({
         const response: AxiosResponse<string> = await axios.post<string>(hostURL + "api/auth/users/reset_password/", {
           email: email,
         });
-        this.dialog = true;
+        this.resetPasswordSuccessDialog = true;
       } catch (error) {
         // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
         const errorMessage = "パスワードリセットに失敗しました。メールアドレスを確認してください。";
@@ -207,7 +208,7 @@ export const useAuthStore = defineStore({
             },
           }
         );
-        this.dialog = true;
+        this.setPasswordSuccessDialog = true;
       } catch (error) {
         // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
         const errorMessage = "パスワード変更に失敗しました。";
@@ -238,7 +239,7 @@ export const useAuthStore = defineStore({
             },
           }
         );
-        this.dialog = true;
+        this.setEmailSuccessDialog = true;
       } catch (error) {
         // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
         const errorMessage = "メールアドレス変更に失敗しました。";
