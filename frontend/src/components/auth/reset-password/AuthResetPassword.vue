@@ -1,13 +1,8 @@
 <template>
   <div class="form">
     <h3>パスワードを忘れた方はメールアドレスを入力してボタンをクリックしてください</h3>
-    <v-text-field
-      label="【必須】メールアドレス"
-      variant="solo"
-      type="email"
-      v-model="authStore.$state.form.email"
-      :rules="[requiredValid, mailValid]"
-    ></v-text-field>
+    <v-text-field label="【必須】メールアドレス" variant="solo" type="email" v-model="authStore.$state.resetForm.email"
+      :rules="[requiredValid, mailValid]"></v-text-field>
     <v-btn v-if="validationResult()" type="submit" @click="handleResetPassword">パスワードのリセットを希望する</v-btn>
     <v-dialog v-model="authStore.$state.dialog" max-width="400">
       <v-card>
@@ -41,7 +36,7 @@ export default defineComponent({
      * Formの送信ボタンの表示と非表示の判定をリアクティブに行っています
      */
     function validationResult() {
-      const emailResult = formEmailValid(authStore.$state.form.email);
+      const emailResult = formEmailValid(authStore.$state.resetForm.email);
       if (emailResult) {
         return true;
       } else {
@@ -53,7 +48,7 @@ export default defineComponent({
      * パスワード変更の申請
      */
     const handleResetPassword = async () => {
-      await authStore.resetPassword(authStore.$state.form.email);
+      await authStore.resetPassword(authStore.$state.resetForm.email);
     };
 
     /**

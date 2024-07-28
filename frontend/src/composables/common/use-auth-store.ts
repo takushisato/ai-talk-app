@@ -13,9 +13,12 @@ export const useAuthStore = defineStore({
     isAuthenticated: false,
     token: "",
     user: null as User | null,
-    form: {
+    loginForm: {
       email: "",
       password: "",
+    },
+    resetForm: {
+      email: "",
     },
     createForm: {
       name: "",
@@ -82,7 +85,7 @@ export const useAuthStore = defineStore({
           processErrorResponse(axiosError.response.status, errorMessage);
         }
       } finally {
-        this.form.password = "";
+        this.loginForm.password = "";
       }
     },
 
@@ -94,8 +97,8 @@ export const useAuthStore = defineStore({
       this.isAuthenticated = false;
       this.token = "";
       this.user = null;
-      this.form.email = "";
-      this.form.password = "";
+      // this.form.email = "";
+      // this.form.password = "";
     },
 
     /**

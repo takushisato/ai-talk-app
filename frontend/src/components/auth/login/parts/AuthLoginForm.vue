@@ -2,24 +2,14 @@
   <div class="form">
     <div>
       <label>【必須】メールアドレス：</label>
-      <v-text-field
-        label="【必須】メールアドレス"
-        variant="solo"
-        type="email"
-        v-model="authStore.$state.form.email"
-        :rules="[requiredValid, mailValid]"
-      ></v-text-field>
+      <v-text-field label="【必須】メールアドレス" variant="solo" type="email" v-model="authStore.$state.loginForm.email"
+        :rules="[requiredValid, mailValid]"></v-text-field>
     </div>
     <br />
     <div>
       <label>【必須】パスワード：</label>
-      <v-text-field
-        label="【必須】パスワード"
-        variant="solo"
-        type="password"
-        v-model="authStore.$state.form.password"
-        :rules="[requiredValid, passwordLengthValid]"
-      ></v-text-field>
+      <v-text-field label="【必須】パスワード" variant="solo" type="password" v-model="authStore.$state.loginForm.password"
+        :rules="[requiredValid, passwordLengthValid]"></v-text-field>
     </div>
     <br />
     <v-btn v-if="validationResult()" type="submit" @click="login()">ログインする</v-btn>
@@ -58,8 +48,8 @@ export default defineComponent({
      * Formの送信ボタンの表示と非表示の判定をリアクティブに行っています
      */
     function validationResult() {
-      const emailResult = formEmailValid(authStore.$state.form.email);
-      const passwordResult = formPasswordValid(authStore.$state.form.password);
+      const emailResult = formEmailValid(authStore.$state.loginForm.email);
+      const passwordResult = formPasswordValid(authStore.$state.loginForm.password);
       if (emailResult?.result && passwordResult?.result) {
         return true;
       } else {
@@ -74,8 +64,8 @@ export default defineComponent({
      */
     async function login(): Promise<void> {
       const postData: LoginPostData = {
-        email: authStore.$state.form.email,
-        password: authStore.$state.form.password,
+        email: authStore.$state.loginForm.email,
+        password: authStore.$state.loginForm.password,
       };
       await authStore.login(postData);
     }
