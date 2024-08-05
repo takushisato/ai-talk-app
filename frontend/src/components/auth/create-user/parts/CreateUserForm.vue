@@ -74,14 +74,7 @@ export default defineComponent({
      * @
      */
     async function createUser(): Promise<void> {
-      const postData: CreateUserPostData = {
-        name: authStore.$state.createForm.name,
-        email: authStore.$state.createForm.email,
-        password: authStore.$state.createForm.password,
-        re_password: authStore.$state.createForm.re_password,
-      };
-      console.log(postData);
-      await authStore.createUser(postData);
+      await authStore.createUser();
     }
 
     return {

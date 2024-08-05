@@ -42,10 +42,16 @@ export const useAuthStore = defineStore({
     /**
      * 会員登録
      */
-    async createUser(postData: CreateUserPostData) {
+    async createUser() {
       try {
         // TODO ローディング処理を追加する
         const hostURL = apiBaseUrl();
+        const postData: CreateUserPostData = {
+          name: this.$state.createForm.name,
+          email: this.$state.createForm.email,
+          password: this.$state.createForm.password,
+          re_password: this.$state.createForm.re_password,
+      };
         const response: AxiosResponse = await axios.post(hostURL + "api/auth/users/", postData);
         console.log(response);
       } catch (error) {
