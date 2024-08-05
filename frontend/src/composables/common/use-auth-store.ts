@@ -153,11 +153,11 @@ export const useAuthStore = defineStore({
      * パスワードリセット処理
      * TODO 動作確認未実施
      */
-    async resetPassword(email: string) {
+    async resetPassword() {
       try {
         const hostURL = apiBaseUrl();
         const response: AxiosResponse<string> = await axios.post<string>(hostURL + "api/auth/users/reset_password/", {
-          email: email,
+          email: this.$state.resetForm.email,
         });
         this.resetPasswordSuccessDialog = true;
       } catch (error) {

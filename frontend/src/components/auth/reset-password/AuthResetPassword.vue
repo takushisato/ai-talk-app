@@ -48,7 +48,7 @@ export default defineComponent({
      * パスワード変更の申請
      */
     const handleResetPassword = async () => {
-      await authStore.resetPassword(authStore.$state.resetForm.email);
+      await authStore.resetPassword();
     };
 
     /**
