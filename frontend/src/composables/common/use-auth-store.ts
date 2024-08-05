@@ -70,9 +70,13 @@ export const useAuthStore = defineStore({
     /**
      * ログイン処理
      */
-    async login(postData: LoginPostData) {
+    async login() {
       try {
         const hostURL = apiBaseUrl();
+        const postData: LoginPostData = {
+        email: this.$state.loginForm.email,
+        password: this.$state.loginForm.password,
+      };
         const response: AxiosResponse<LoginResponse> = await axios.post<LoginResponse>(
           hostURL + "api_token_auth/",
           postData

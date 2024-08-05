@@ -61,11 +61,7 @@ export default defineComponent({
      * authStateからログイン
      */
     async function login(): Promise<void> {
-      const postData: LoginPostData = {
-        email: authStore.$state.loginForm.email,
-        password: authStore.$state.loginForm.password,
-      };
-      await authStore.login(postData);
+      await authStore.login();
     }
 
     /**
