@@ -31,7 +31,7 @@ import { requiredValid, passwordLengthValid } from "@/utils/validation";
 import { formPasswordValid, formRePasswordValid, formRePasswordComparison } from "@/utils/validation";
 import { useAuthStore } from "~/composables/common/use-auth-store";
 export default defineComponent({
-  name: "ConfirmPasswordSetForm",
+  name: "ConfirmPasswordResetForm",
   props: {
     uid: {
       type: String,

@@ -1,17 +1,17 @@
 <template>
   <div class="mt-5 md:col-span-2 md:mt-0">
-    <SettingsConfirmPasswordSetForm :uid="uid" :token="token" />
+    <SettingsConfirmPasswordResetForm :uid="uid" :token="token" />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
-import SettingsConfirmPasswordSetForm from "~/components/settings/auth/ConfirmPasswordSetForm.vue";
+import SettingsConfirmPasswordResetForm from "~/components/settings/auth/ConfirmPasswordResetForm.vue";
 
 export default defineComponent({
   name: "ConfirmPassword",
   components: {
-    SettingsConfirmPasswordSetForm,
+    SettingsConfirmPasswordResetForm,
   },
   setup() {
     let uid = ref("");
