@@ -17,6 +17,11 @@ export const useAuthStore = defineStore({
       email: "",
       password: "",
     },
+    setPasswordForm: {
+      new_password: "",
+      re_new_password: "",
+      current_password: "",
+    },
     resetForm: {
       email: "",
     },
@@ -202,15 +207,15 @@ export const useAuthStore = defineStore({
      * パスワード変更処理
      * TODO 動作確認未実施
      */
-    async setPassword(new_password: string, re_new_password: string, current_password: string) {
+    async setPassword() {
       try {
         const hostURL = apiBaseUrl();
         const response: AxiosResponse = await axios.post(
           hostURL + "api/auth/users/set_password/",
           {
-            new_password: new_password,
-            re_new_password: re_new_password,
-            current_password: current_password,
+            new_password: this.$state.setPasswordForm.new_password,
+            re_new_password: this.$state.setPasswordForm.re_new_password,
+            current_password: this.$state.setPasswordForm.current_password,
           },
           {
             headers: {
