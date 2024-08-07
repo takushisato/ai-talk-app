@@ -27,7 +27,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { requiredValid, passwordLengthValid } from "@/utils/validation";
+// import { requiredValid, passwordLengthValid } from "@/utils/validation";
 import { formPasswordValid, formRePasswordValid, formRePasswordComparison } from "@/utils/validation";
 import { useAuthStore } from "~/composables/common/use-auth-store";
 export default defineComponent({
@@ -45,7 +45,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const authStore = useAuthStore();
     const router = useRouter();
-    let dialog: globalThis.Ref<boolean> = ref(false);
+    // let dialog: globalThis.Ref<boolean> = ref(false);
     let errorMessages: any = [];
     let errorResult: globalThis.Ref<boolean> = ref(false);
 
@@ -91,7 +91,7 @@ export default defineComponent({
      * 処理が正常に終了したらダイアログを閉じてTOPページへ遷移
      */
     function topPageMove(): void {
-      dialog.value = false;
+      // dialog.value = false;
       router.push("/");
     }
 
@@ -105,7 +105,7 @@ export default defineComponent({
 
     return {
       authStore,
-      dialog,
+      // dialog,
       errorResult,
       errorMessages,
       validationResult,
