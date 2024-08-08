@@ -1,12 +1,12 @@
 <template>
-  <SettingIndexPage />
+    <SettingIndexPage />
 </template>
 <script lang="ts">
-import SettingIndexPage from "@/components/settings/SettingIndexPage.vue";
+import SettingIndexPage from '@/components/settings/SettingIndexPage.vue';
 export default defineComponent({
-  components: {
-    SettingIndexPage,
-  },
-  name: "settings",
+    components: {
+        SettingIndexPage,
+    },
+    name: 'settings',
 });
 </script>
