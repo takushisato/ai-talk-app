@@ -56,10 +56,7 @@ export default defineComponent({
          * 別ファイルに定義して引数でpasswordとrePasswordを渡すと何故か上手く読み込めないため、ここで定義
          */
         const passwordComparisonValid = () => {
-            if (
-                authStore.$state.confirmPasswordForm.new_password !=
-                authStore.$state.confirmPasswordForm.re_new_password
-            ) {
+            if (authStore.$state.setPasswordForm.new_password != authStore.$state.setPasswordForm.re_new_password) {
                 return '２つのパスワードが一致しません。';
             } else {
                 return false;
@@ -71,11 +68,11 @@ export default defineComponent({
          * Formの送信ボタンの表示と非表示の判定をリアクティブに行っています
          */
         function validationResult(): boolean {
-            const passwordResult = formPasswordValid(authStore.$state.confirmPasswordForm.new_password);
-            const rePasswordResult = formRePasswordValid(authStore.$state.confirmPasswordForm.re_new_password);
+            const passwordResult = formPasswordValid(authStore.$state.setPasswordForm.new_password);
+            const rePasswordResult = formRePasswordValid(authStore.$state.setPasswordForm.re_new_password);
             const PasswordComparisonResult = formRePasswordComparison(
-                authStore.$state.confirmPasswordForm.new_password,
-                authStore.$state.confirmPasswordForm.re_new_password
+                authStore.$state.setPasswordForm.new_password,
+                authStore.$state.setPasswordForm.re_new_password
             );
             console.log(passwordResult, rePasswordResult, PasswordComparisonResult);
             if (passwordResult && rePasswordResult && PasswordComparisonResult) {
