@@ -209,7 +209,6 @@ export const useAuthStore = defineStore({
 
         /**
          * パスワード変更処理
-         * TODO 動作確認未実施
          */
         async setPassword() {
             try {
@@ -229,7 +228,6 @@ export const useAuthStore = defineStore({
                 );
                 this.setPasswordSuccessDialog = true;
             } catch (error) {
-                // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
                 const errorMessage = 'パスワード変更に失敗しました。';
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
