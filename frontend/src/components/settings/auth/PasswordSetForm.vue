@@ -25,7 +25,7 @@
         <v-btn v-if="validationResult()" type="submit" @click="passwordSetConfirm()">このパスワードにする</v-btn>
         <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" />
 
-        <v-dialog v-model="authStore.$state.confirmSetPasswordDialog" max-width="400">
+        <v-dialog v-model="authStore.$state.setPasswordSuccessDialog" max-width="400">
             <v-card>
                 <v-card-text>
                     <p>パスワードの変更が完了しました</p>
