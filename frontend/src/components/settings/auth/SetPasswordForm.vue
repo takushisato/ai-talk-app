@@ -43,7 +43,7 @@
 import { formPasswordValid, formRePasswordValid, formRePasswordComparison } from '@/utils/validation';
 import { useAuthStore } from '~/composables/common/use-auth-store';
 export default defineComponent({
-    name: 'PasswordSetForm',
+    name: 'SetPasswordForm',
     setup() {
         const authStore = useAuthStore();
         const router = useRouter();
