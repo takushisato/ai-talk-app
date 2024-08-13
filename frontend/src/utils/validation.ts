@@ -108,3 +108,13 @@ export const formRePasswordComparison = (password: string, rePassword: string) =
         return { result: true };
     }
 };
+
+/**
+ * VuetifyのFormのsubmitボタン表示管理用のバリデーション
+ * emailと確認用emailの一致を判定します
+ */
+export const formReEmailComparison = (email: string, reEmail: string) => {
+    if (email == reEmail) {
+        return { result: true };
+    }
+};

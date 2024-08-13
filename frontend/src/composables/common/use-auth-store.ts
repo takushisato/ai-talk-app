@@ -36,6 +36,11 @@ export const useAuthStore = defineStore({
             re_new_password: '',
             current_password: '',
         },
+        setEmail: {
+            new_email: '',
+            re_new_email: '',
+            current_password: '',
+        },
         confirmPasswordFormDialog: false,
         confirmSetPasswordDialog: false,
         loginSuccessDialog: false,
@@ -238,17 +243,16 @@ export const useAuthStore = defineStore({
 
         /**
          * メールアドレス変更処理
-         * TODO 動作確認未実施
          */
-        async setEmail(current_password: string, new_email: string, re_new_email: string) {
+        async setEmail() {
             try {
                 const hostURL = apiBaseUrl();
                 const response: AxiosResponse = await axios.post(
                     hostURL + 'api/auth/users/set_email/',
                     {
-                        new_email: new_email,
-                        re_new_email: re_new_email,
-                        current_password: current_password,
+                        new_email: this.$state.setEmail.new_email,
+                        re_new_email: this.$state.setEmail.re_new_email,
+                        current_password: this.$state.setEmail.current_password,
                     },
                     {
                         headers: {
