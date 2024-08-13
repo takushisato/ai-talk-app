@@ -162,7 +162,6 @@ export const useAuthStore = defineStore({
 
         /**
          * パスワードリセット処理
-         * TODO 動作確認未実施
          */
         async resetPassword() {
             try {
@@ -186,7 +185,6 @@ export const useAuthStore = defineStore({
 
         /**
          * パスワード変更確認処理
-         * TODO 動作確認未実施
          */
         async resetPasswordConfirm(uid: string, token: string) {
             try {
@@ -209,6 +207,10 @@ export const useAuthStore = defineStore({
                 if (axiosError.response) {
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
+            } finally {
+                this.$state.confirmPasswordForm.new_password = '';
+                this.$state.confirmPasswordForm.re_new_password = '';
+                this.$state.confirmPasswordForm.current_password = '';
             }
         },
 
@@ -238,6 +240,10 @@ export const useAuthStore = defineStore({
                 if (axiosError.response) {
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
+            } finally {
+                this.$state.setPasswordForm.new_password = '';
+                this.$state.setPasswordForm.re_new_password = '';
+                this.$state.setPasswordForm.current_password = '';
             }
         },
 
@@ -268,6 +274,8 @@ export const useAuthStore = defineStore({
                 if (axiosError.response) {
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
+            } finally {
+                this.$state.setEmail.current_password = '';
             }
         },
     },
