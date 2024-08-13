@@ -8,9 +8,9 @@ const passSync = /(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-z0-9]{8,}/;
  * VuetifyのFormのエラー表示用のバリデーション
  * 必須項目の入力の有無を返します
  */
-export const requiredValid = (value: any) => {
+export const requiredValid = (value: string | number | null | undefined): true | string => {
     if (!!value) {
-        return !!value;
+        return true;
     } else {
         return '必須項目です。必ず入力してください。';
     }
@@ -20,9 +20,9 @@ export const requiredValid = (value: any) => {
  * VuetifyのFormのエラー表示用のバリデーション
  * nameの文字数を判定します（現在は１～２０文字で判定）
  */
-export const nameLengthValid = (value: any) => {
+export const nameLengthValid = (value: string): true | string => {
     if (value.length <= 20) {
-        return value.length <= 20;
+        return true;
     } else {
         return '20文字以内で入力してください。';
     }
@@ -32,11 +32,11 @@ export const nameLengthValid = (value: any) => {
  * VuetifyのFormのエラー表示用のバリデーション
  * passwordの正規表現を判定します
  */
-export const passwordLengthValid = (password: any) => {
-    if (passSync.test(password) == false) {
+export const passwordLengthValid = (password: string): true | string => {
+    if (!passSync.test(password)) {
         return 'パスワードは半角英数字8文字以上で入力してください。';
     } else {
-        return false;
+        return true;
     }
 };
 
@@ -44,11 +44,11 @@ export const passwordLengthValid = (password: any) => {
  * VuetifyのFormのエラー表示用のバリデーション
  * emailの正規表現を判定します
  */
-export const mailValid = (email: any) => {
-    if (regex.test(email) == false) {
+export const mailValid = (email: string): true | string => {
+    if (!regex.test(email)) {
         return '@マークを含めた形式のメールアドレスを入力してください。';
     } else {
-        return false;
+        return true;
     }
 };
 
@@ -56,10 +56,11 @@ export const mailValid = (email: any) => {
  * VuetifyのFormのsubmitボタン表示管理用のバリデーション
  * nameを判定します
  */
-export const formNameValid = (name: any) => {
-    if (name.value.length != 0 && name.value.length <= 20) {
+export const formNameValid = (name: { value: string }): { result: boolean } => {
+    if (name.value.length !== 0 && name.value.length <= 20) {
         return { result: true };
     }
+    return { result: false };
 };
 
 /**
