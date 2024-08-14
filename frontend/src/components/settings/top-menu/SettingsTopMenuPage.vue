@@ -7,6 +7,6 @@
 import SettingsTopMenu from '~/components/settings/top-menu/parts/SettingsTopMenu.vue';
 export default defineComponent({
     components: { SettingsTopMenu },
-    name: 'SettingAuthPage',
+    name: 'SettingsTopMenu',
 });
 </script>
