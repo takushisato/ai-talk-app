@@ -35,11 +35,10 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-// import { requiredValid, passwordLengthValid } from "@/utils/validation";
 import { formPasswordValid, formRePasswordValid, formRePasswordComparison } from '@/utils/validation';
 import { useAuthStore } from '~/composables/common/use-auth-store';
 export default defineComponent({
-    name: 'ConfirmPasswordResetForm',
+    name: 'ConfirmResetPasswordForm',
     props: {
         uid: {
             type: String,
@@ -53,7 +52,6 @@ export default defineComponent({
     setup(props, { emit }) {
         const authStore = useAuthStore();
         const router = useRouter();
-        // let dialog: globalThis.Ref<boolean> = ref(false);
         let errorMessages: any = [];
         let errorResult: globalThis.Ref<boolean> = ref(false);
 
@@ -119,7 +117,6 @@ export default defineComponent({
 
         return {
             authStore,
-            // dialog,
             errorResult,
             errorMessages,
             validationResult,
