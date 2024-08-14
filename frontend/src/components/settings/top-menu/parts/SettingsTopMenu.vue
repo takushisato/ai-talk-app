@@ -9,6 +9,6 @@
 <script lang="ts">
 export default defineComponent({
     components: {},
-    name: 'settingIndexPage',
+    name: 'settingsTopMenu',
 });
 </script>

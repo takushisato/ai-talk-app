@@ -1,10 +1,10 @@
 <template>
-    <SettingAuthPage />
+    <SettingsTopMenuPage />
 </template>
 <script lang="ts">
-import SettingAuthPage from '@/components/settings/auth/SettingAuthPage.vue';
+import SettingsTopMenuPage from '@/components/settings/top-menu/SettingsTopMenuPage.vue';
 export default defineComponent({
-    components: { SettingAuthPage },
+    components: { SettingsTopMenuPage },
     name: 'settings-auth',
 });
 </script>
