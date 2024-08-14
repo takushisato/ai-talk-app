@@ -1,10 +1,10 @@
 <template>
-    <SetEmailForm />
+    <SettingsAuthSetEmailPage />
 </template>
 <script lang="ts">
-import SetEmailForm from '@/components/settings/auth/SetEmailForm.vue';
+import SettingsAuthSetEmailPage from '@/components/settings/auth/set-email/SettingsAuthSetEmailPage.vue';
 export default defineComponent({
-    components: { SetEmailForm },
+    components: { SettingsAuthSetEmailPage },
     name: 'set-email',
 });
 </script>
