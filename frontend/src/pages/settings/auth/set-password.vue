@@ -1,10 +1,10 @@
 <template>
-    <SetPasswordForm />
+    <SettingsAuthSetPasswordPage />
 </template>
 <script lang="ts">
-import SetPasswordForm from '@/components/settings/auth/SetPasswordForm.vue';
+import SettingsAuthSetPasswordPage from '~/components/settings/auth/set-password/SettingsAuthSetPasswordPage.vue';
 export default defineComponent({
-    components: { SetPasswordForm },
+    components: { SettingsAuthSetPasswordPage },
     name: 'set-password',
 });
 </script>
