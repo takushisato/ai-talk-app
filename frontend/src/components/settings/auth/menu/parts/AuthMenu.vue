@@ -9,6 +9,6 @@
 <script lang="ts">
 export default defineComponent({
     components: {},
-    name: 'SettingAuthPage',
+    name: 'AuthMenu',
 });
 </script>
