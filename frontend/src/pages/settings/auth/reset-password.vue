@@ -1,10 +1,10 @@
 <template>
-    <AuthResetPassword />
+    <SettingsAuthResetPasswordPage />
 </template>
 <script lang="ts">
-import AuthResetPassword from '@/components/auth/reset-password/AuthResetPassword.vue';
+import SettingsAuthResetPasswordPage from '@/components/settings/auth/reset-password/SettingsAuthResetPasswordPage.vue';
 export default defineComponent({
-    components: { AuthResetPassword },
-    name: 'settings-auth',
+    components: { SettingsAuthResetPasswordPage },
+    name: 'reset-password',
 });
 </script>
