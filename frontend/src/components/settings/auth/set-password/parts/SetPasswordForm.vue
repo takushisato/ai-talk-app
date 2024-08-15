@@ -2,7 +2,7 @@
     <div>
         <h3>パスワードの変更はこちら</h3>
         <v-text-field
-            label="現在のパスワード"
+            label="【必須】現在のパスワード"
             variant="solo"
             type="password"
             v-model="authStore.$state.setPasswordForm.current_password"
