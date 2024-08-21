@@ -67,8 +67,7 @@ export const useAuthStore = defineStore({
             } catch (error) {
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
-                    const errorMessage = '会員登録に失敗しました。パスワードとメールアドレスを確認してください。';
+                    const errorMessage = axiosError.response.data as string;
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
@@ -103,8 +102,7 @@ export const useAuthStore = defineStore({
                 this.isAuthenticated = false;
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
-                    const errorMessage = 'ログインに失敗しました。パスワードとメールアドレスを確認してください。';
+                    const errorMessage = axiosError.response.data as string;
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
@@ -137,11 +135,10 @@ export const useAuthStore = defineStore({
                 });
                 this.user = response.data;
             } catch (error) {
-                // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
-                const errorMessage = '認証情報の期限が切れました。再度ログインしてください。';
                 await this.logout();
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
+                    const errorMessage = axiosError.response.data as string;
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             }
@@ -173,10 +170,9 @@ export const useAuthStore = defineStore({
                 );
                 this.resetPasswordSuccessDialog = true;
             } catch (error) {
-                // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
-                const errorMessage = 'パスワードリセットに失敗しました。メールアドレスを確認してください。';
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
+                    const errorMessage = axiosError.response.data as string;
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             }
@@ -198,12 +194,10 @@ export const useAuthStore = defineStore({
                 );
                 this.$state.confirmPasswordFormDialog = true;
             } catch (error) {
-                // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
-                const errorMessage =
-                    'パスワードリセットに失敗しました。パスワードが簡単すぎるか、サービスに障害が起きている可能性があります。暫く時間を置いて再度お試しください';
                 const axiosError = error as AxiosError;
                 console.log(axiosError);
                 if (axiosError.response) {
+                    const errorMessage = axiosError.response.data as string;
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
@@ -234,9 +228,9 @@ export const useAuthStore = defineStore({
                 );
                 this.setPasswordSuccessDialog = true;
             } catch (error) {
-                const errorMessage = 'パスワード変更に失敗しました。';
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
+                    const errorMessage = axiosError.response.data as string;
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
@@ -267,10 +261,9 @@ export const useAuthStore = defineStore({
                 );
                 this.setEmailSuccessDialog = true;
             } catch (error) {
-                // TODO バックエンドのエラーメッセージを取得して渡したい。現状バックエンドからのエラーメッセージが微妙なため手入力している。
-                const errorMessage = 'メールアドレス変更に失敗しました。';
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
+                    const errorMessage = axiosError.response.data as string;
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
