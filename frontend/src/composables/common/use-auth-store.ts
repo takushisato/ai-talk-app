@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { apiBaseUrl } from '~/utils/api-base-url';
 import { processErrorResponse } from '~/domain/api/process-error-response';
+import type { ErrorResponse } from '~/domain/api/error-response';
 import type { User } from '~/domain/auth/user';
 import type { LoginPostData, LoginResponse } from '~/domain/auth/login';
 import type { CreateUserPostData } from '~/domain/auth/create-user';
@@ -67,7 +68,8 @@ export const useAuthStore = defineStore({
             } catch (error) {
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    const errorMessage = axiosError.response.data as string;
+                    const errorData = axiosError.response.data as ErrorResponse;
+                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
@@ -102,7 +104,8 @@ export const useAuthStore = defineStore({
                 this.isAuthenticated = false;
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    const errorMessage = axiosError.response.data as string;
+                    const errorData = axiosError.response.data as ErrorResponse;
+                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
@@ -138,7 +141,8 @@ export const useAuthStore = defineStore({
                 await this.logout();
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    const errorMessage = axiosError.response.data as string;
+                    const errorData = axiosError.response.data as ErrorResponse;
+                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             }
@@ -172,7 +176,8 @@ export const useAuthStore = defineStore({
             } catch (error) {
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    const errorMessage = axiosError.response.data as string;
+                    const errorData = axiosError.response.data as ErrorResponse;
+                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             }
@@ -197,7 +202,8 @@ export const useAuthStore = defineStore({
                 const axiosError = error as AxiosError;
                 console.log(axiosError);
                 if (axiosError.response) {
-                    const errorMessage = axiosError.response.data as string;
+                    const errorData = axiosError.response.data as ErrorResponse;
+                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
@@ -230,7 +236,8 @@ export const useAuthStore = defineStore({
             } catch (error) {
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    const errorMessage = axiosError.response.data as string;
+                    const errorData = axiosError.response.data as ErrorResponse;
+                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
@@ -263,7 +270,8 @@ export const useAuthStore = defineStore({
             } catch (error) {
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
-                    const errorMessage = axiosError.response.data as string;
+                    const errorData = axiosError.response.data as ErrorResponse;
+                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
                     processErrorResponse(axiosError.response.status, errorMessage);
                 }
             } finally {
