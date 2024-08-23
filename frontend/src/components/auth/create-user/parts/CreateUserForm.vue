@@ -7,6 +7,7 @@
                 variant="solo"
                 type="email"
                 v-model="authStore.$state.createForm.name"
+                :rules="[requiredValid]"
             ></v-text-field>
         </div>
         <br />
@@ -39,7 +40,7 @@
                 variant="solo"
                 type="password"
                 v-model="authStore.$state.createForm.re_password"
-                :rules="[requiredValid, passwordLengthValid]"
+                :rules="[requiredValid, passwordComparisonValid]"
             ></v-text-field>
         </div>
         <br />
@@ -48,7 +49,6 @@
 </template>
 <script lang="ts">
 import { useAuthStore } from '@/composables/common/use-auth-store';
-import type { CreateUserPostData } from '@/domain/auth/create-user';
 export default defineComponent({
     components: {},
     name: 'CreateUserForm',
@@ -62,12 +62,34 @@ export default defineComponent({
         function validationResult() {
             const emailResult = formEmailValid(authStore.$state.createForm.email);
             const passwordResult = formPasswordValid(authStore.$state.createForm.password);
-            if (emailResult?.result && passwordResult?.result) {
+            const PasswordComparisonResult = formRePasswordComparison(
+                authStore.$state.createForm.password,
+                authStore.$state.createForm.re_password
+            );
+            if (
+                emailResult?.result &&
+                passwordResult?.result &&
+                PasswordComparisonResult?.result &&
+                authStore.$state.createForm.name != ''
+            ) {
                 return true;
             } else {
                 return false;
             }
         }
+
+        /**
+         * ２つのパスワードの比較
+         * （Vuetifyのコンポーネントで使用）
+         * 別ファイルに定義して引数でpasswordとrePasswordを渡すと何故か上手く読み込めないため、ここで定義
+         */
+        const passwordComparisonValid = () => {
+            if (authStore.$state.createForm.password == authStore.$state.createForm.re_password) {
+                return true;
+            } else {
+                return '２つのパスワードが一致しません。';
+            }
+        };
 
         /**
          * authStateからユーザー作成
@@ -81,6 +103,7 @@ export default defineComponent({
             authStore,
             validationResult,
             createUser,
+            passwordComparisonValid,
         };
     },
 });
