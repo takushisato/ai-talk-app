@@ -74,7 +74,6 @@ export default defineComponent({
                 authStore.$state.setPasswordForm.new_password,
                 authStore.$state.setPasswordForm.re_new_password
             );
-            console.log(passwordResult, rePasswordResult, PasswordComparisonResult);
             if (passwordResult && rePasswordResult && PasswordComparisonResult) {
                 return true;
             } else {

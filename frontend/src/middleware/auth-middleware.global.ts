@@ -10,6 +10,7 @@ export default defineNuxtRouteMiddleware(async (to, _from) => {
         '/settings/auth/reset-password',
         '/settings/auth/confirm-password',
         '/auth/register',
+        '/auth/activation',
     ];
 
     // オートログイン処理
