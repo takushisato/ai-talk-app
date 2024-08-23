@@ -66,6 +66,7 @@ export const useAuthStore = defineStore({
                     re_password: this.$state.createForm.re_password,
                 };
                 const response: AxiosResponse = await axios.post(hostURL + 'api/auth/users/', postData);
+                this.CreateUserSuccessDialog = true;
             } catch (error) {
                 const axiosError = error as AxiosError;
                 if (axiosError.response) {
