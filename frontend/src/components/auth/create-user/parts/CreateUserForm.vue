@@ -117,7 +117,7 @@ export default defineComponent({
          * 処理が正常に終了したらダイアログを閉じてTOPページへ遷移
          */
         function topPageMove(): void {
-            authStore.$state.loginSuccessDialog = false;
+            authStore.$state.CreateUserSuccessDialog = false;
             router.push('/');
         }
 
