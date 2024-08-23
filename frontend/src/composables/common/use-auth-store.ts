@@ -42,6 +42,7 @@ export const useAuthStore = defineStore({
             re_new_email: '',
             current_password: '',
         },
+        CreateUserSuccessDialog: false,
         confirmPasswordFormDialog: false,
         confirmSetPasswordDialog: false,
         loginSuccessDialog: false,

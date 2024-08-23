@@ -45,6 +45,19 @@
         </div>
         <br />
         <v-btn v-if="validationResult()" type="submit" @click="createUser()">会員登録する</v-btn>
+        <v-dialog v-model="authStore.$state.CreateUserSuccessDialog" max-width="400">
+            <v-card>
+                <v-card-text>
+                    <p>入力されたメールアドレスに会員登録の案内を送信しました</p>
+                    <br />
+                    <p>指定のURLをクリックして会員登録を有効にしてください</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="topPageMove()">閉じる</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script lang="ts">
@@ -54,6 +67,7 @@ export default defineComponent({
     name: 'CreateUserForm',
     setup() {
         const authStore = useAuthStore();
+        const router = useRouter();
 
         /**
          * バリデーションの結果、問題がなければtrue、問題があればfalseを返します
@@ -99,11 +113,20 @@ export default defineComponent({
             await authStore.createUser();
         }
 
+        /**
+         * 処理が正常に終了したらダイアログを閉じてTOPページへ遷移
+         */
+        function topPageMove(): void {
+            authStore.$state.loginSuccessDialog = false;
+            router.push('/');
+        }
+
         return {
             authStore,
             validationResult,
             createUser,
             passwordComparisonValid,
+            topPageMove,
         };
     },
 });
