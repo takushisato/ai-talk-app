@@ -25,7 +25,7 @@
         <v-btn @click="postTalk()">AIに質問する</v-btn>
     </v-form>
 
-    <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" />
+    <!-- <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" /> -->
 
     <v-dialog v-model="dialog" max-width="400">
         <v-card>
@@ -48,8 +48,7 @@ export default {
 <script setup lang="ts">
 import { useAuthStore } from '~/composables/common/use-auth-store';
 const authStore = useAuthStore();
-// const hostURL: string = urlStore();
-const hostURL: string = 'http://localhost:3000/';
+const hostURL = apiBaseUrl();
 let dialog: globalThis.Ref<boolean> = ref(false);
 let loading: globalThis.Ref<boolean> = ref(false);
 let nextPage: globalThis.Ref<string> = ref('');
@@ -68,7 +67,7 @@ const id = props.id;
  * スレッド内のAIとの過去のやり取りを取得します
  */
 async function getTalks() {
-    const { data, error } = await useFetch(hostURL + '/ai-talk/get-talks/' + id, {
+    const { data, error } = await useFetch(hostURL + 'ai-talk/get-talks/' + id, {
         method: 'GET',
         headers: { Authorization: 'Token ' + authStore.$state.token },
     });
@@ -136,7 +135,7 @@ async function postTalk() {
             thread: id,
             question: postQuestion.value,
         };
-        const { data, error } = await useFetch(hostURL + '/ai-talk/question-and-answer/', {
+        const { data, error } = await useFetch(hostURL + 'ai_talk/question-and-answer/', {
             method: 'POST',
             headers: { Authorization: 'Token ' + authStore.$state.token },
             body: postData,
@@ -156,7 +155,7 @@ async function postTalk() {
  * backendからAIとの会話を削除します
  */
 async function deleteTalks(id: any) {
-    const { data, error } = await useFetch(hostURL + '/ai-talk/question-and-answer/' + id, {
+    const { data, error } = await useFetch(hostURL + 'ai_talk/question-and-answer/' + id, {
         method: 'DELETE',
         headers: { Authorization: 'Token ' + authStore.$state.token },
     });

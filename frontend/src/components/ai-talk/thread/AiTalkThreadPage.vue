@@ -3,7 +3,7 @@
     <br />
     <div v-for="(thread, key) in threads" class="text-right">
         <v-icon class="mr-0 mb-2" @click="deleteThreads(thread.id, key)">{{ 'mdi-comment-remove-outline' }}</v-icon>
-        <nuxt-link :to="/ai-assistant/ + `${thread.id}`" style="text-decoration: none; text-align: left">
+        <nuxt-link :to="/ai-talk/ + `${thread.id}`" style="text-decoration: none; text-align: left">
             <v-card class="cards">
                 {{ thread.title }}
             </v-card>
@@ -20,7 +20,7 @@
         <v-btn type="submit" @click="postThread()">スレッドを作成</v-btn>
     </div>
 
-    <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" />
+    <!-- <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" /> -->
 
     <v-dialog v-model="dialog" max-width="400">
         <v-card>
@@ -43,8 +43,7 @@ export default {
 <script setup lang="ts">
 import { useAuthStore } from '~/composables/common/use-auth-store';
 const authStore = useAuthStore();
-// const hostURL: string = urlStore();
-const hostURL: string = 'http://localhost:3000/';
+const hostURL = apiBaseUrl();
 let threads: any = ref([]);
 let makeThread: globalThis.Ref<string> = ref('');
 let dialog: globalThis.Ref<boolean> = ref(false);
@@ -57,10 +56,11 @@ let errorResult: globalThis.Ref<boolean> = ref(false);
  * 自分の投稿したスレッドの一覧を取得します
  */
 async function getThread() {
-    const { data, error } = await useFetch(hostURL + '/ai-talk/get-thread/', {
+    const { data, error } = await useFetch(hostURL + 'ai_talk/get_thread/', {
         method: 'GET',
         headers: { Authorization: 'Token ' + authStore.$state.token },
     });
+    console.log(error);
     if (error.value == null) {
         const dataValue: any = data.value;
         threads = dataValue.results;
@@ -123,7 +123,7 @@ async function postThread() {
         const postData = {
             title: makeThread.value,
         };
-        const { data, error } = await useFetch(hostURL + '/ai-talk/thread/', {
+        const { data, error } = await useFetch(hostURL + 'ai_talk/thread/', {
             method: 'POST',
             headers: { Authorization: 'Token ' + authStore.$state.token },
             body: postData,
@@ -142,7 +142,7 @@ async function postThread() {
  * スレッドを削除します
  */
 async function deleteThreadName(id: any) {
-    const { data, error } = await useFetch(hostURL + '/ai-talk/thread/' + id, {
+    const { data, error } = await useFetch(hostURL + 'ai_talk/thread/' + id, {
         method: 'DELETE',
         headers: { Authorization: 'Token ' + authStore.$state.token },
     });
