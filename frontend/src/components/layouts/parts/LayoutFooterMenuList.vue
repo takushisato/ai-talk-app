@@ -22,7 +22,7 @@ export default defineComponent({
         const items = [
             {
                 name: 'AIに聞く',
-                URL: '/',
+                URL: '/ai-talk/thread',
                 icon: 'mdi-ghost',
             },
             {
