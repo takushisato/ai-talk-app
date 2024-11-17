@@ -20,7 +20,7 @@
         <v-btn type="submit" @click="postThread()">スレッドを作成</v-btn>
     </div>
 
-    <!-- <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" /> -->
+    <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" />
 
     <v-dialog v-model="dialog" max-width="400">
         <v-card>
