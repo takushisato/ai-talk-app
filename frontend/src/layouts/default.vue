@@ -34,7 +34,7 @@ export default defineComponent({
 </script>
 <style scoped>
 .main {
-    min-height: 80vh;
+    min-height: 90vh;
     max-width: 700px;
     margin: 0 auto;
 }
