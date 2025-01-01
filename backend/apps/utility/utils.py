@@ -1,31 +1,30 @@
-import openai
+import environ
 import os
+from openai import OpenAI
 from django.conf import settings
-from server.settings.dev import SECRET_KEY
 
 # 環境変数からopenAIのキーを取得
-APK_KEY = SECRET_KEY
+env = environ.Env()
+SECRET_KEY = env('SECRET_KEY')
+client = OpenAI(api_key=SECRET_KEY)
 
 
 def chat_gpt(prompt):
     # API KEYをセット
-    openai.api_key = APK_KEY
 
     # OpenAIのインスタンスを生成
-    openai.Model.list()
+    client.models.list()
 
     # APIを使ってリクエストを投げる（下記リンクが公式）
     # https://platform.openai.com/docs/models/gpt-3
-    response = openai.Completion.create(
-        model="text-davinci-003",
-        prompt=prompt,
-        temperature=0,
-        max_tokens=300,
-        top_p=1.0,
-        frequency_penalty=0.0,
-        presence_penalty=0.0
-    )
-    response = (response["choices"][0]["text"]).strip()
+    response = client.completions.create(model="text-davinci-003",
+                                         prompt=prompt,
+                                         temperature=0,
+                                         max_tokens=300,
+                                         top_p=1.0,
+                                         frequency_penalty=0.0,
+                                         presence_penalty=0.0)
+    response = response.choices[0].text.strip()
     return response
 
 
