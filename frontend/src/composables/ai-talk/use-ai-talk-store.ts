@@ -36,7 +36,7 @@ export const useAiTalkStore = defineStore({
         /**
          * スレッド内のAIとの過去のやり取りを取得します
          */
-        async fetchThreadTalks(id: string) {
+        async fetchThreadTalks(id: string): Promise<void> {
             try {
                 const hostURL = apiBaseUrl();
                 const authStore = useAuthStore();
@@ -67,7 +67,7 @@ export const useAiTalkStore = defineStore({
          *
          * TODO 動作確認
          */
-        async nextPagination() {
+        async nextPagination(): Promise<void> {
             try {
                 const authStore = useAuthStore();
                 const response: AxiosResponse<TalkCollection> = await axios.get(this.$state.nextPage, {
@@ -93,7 +93,7 @@ export const useAiTalkStore = defineStore({
          *
          * TODO 動作確認
          */
-        async previousPagination() {
+        async previousPagination(): Promise<void> {
             try {
                 const authStore = useAuthStore();
                 const response: AxiosResponse<TalkCollection> = await axios.get(this.$state.previousPage, {
@@ -119,7 +119,7 @@ export const useAiTalkStore = defineStore({
          *
          * TODO　動作確認
          */
-        async postQuestionToAI(id: string) {
+        async postQuestionToAI(id: string): Promise<void> {
             if (!this.$state.postQuestion) return; // 質問がnullの場合、returnで終了
             try {
                 const authStore = useAuthStore();
@@ -149,7 +149,7 @@ export const useAiTalkStore = defineStore({
          *
          * TODO 動作確認
          */
-        async deleteTalk(id: string) {
+        async deleteTalk(id: string): Promise<void> {
             try {
                 const authStore = useAuthStore();
                 const response: AxiosResponse = await axios.delete('ai_talk/question-and-answer/' + id, {
@@ -174,7 +174,7 @@ export const useAiTalkStore = defineStore({
          *
          * TODO 動作確認
          */
-        deleteTalkObject(key: number) {
+        deleteTalkObject(key: number): void {
             this.$state.talks.splice(key, 1);
         },
 
@@ -183,7 +183,7 @@ export const useAiTalkStore = defineStore({
          *
          * TODO 動作確認
          */
-        deleteQuestionAndAnswer(id: string, key: number) {
+        deleteQuestionAndAnswer(id: string, key: number): void {
             this.deleteTalk(id);
             this.deleteTalkObject(key);
         },

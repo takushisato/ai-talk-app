@@ -55,7 +55,7 @@ export const useAuthStore = defineStore({
         /**
          * 会員登録
          */
-        async createUser() {
+        async createUser(): Promise<void> {
             try {
                 // TODO ローディング処理を追加する
                 const hostURL = apiBaseUrl();
@@ -83,7 +83,7 @@ export const useAuthStore = defineStore({
         /**
          * ログイン処理
          */
-        async login() {
+        async login(): Promise<void> {
             try {
                 const hostURL = apiBaseUrl();
                 const postData: LoginPostData = {
@@ -165,7 +165,7 @@ export const useAuthStore = defineStore({
         /**
          * パスワードリセット処理
          */
-        async resetPassword() {
+        async resetPassword(): Promise<void> {
             try {
                 const hostURL = apiBaseUrl();
                 const response: AxiosResponse<string> = await axios.post<string>(
@@ -188,7 +188,7 @@ export const useAuthStore = defineStore({
         /**
          * パスワード変更確認処理
          */
-        async resetPasswordConfirm(uid: string, token: string) {
+        async resetPasswordConfirm(uid: string, token: string): Promise<void> {
             try {
                 const hostURL = apiBaseUrl();
                 const response: AxiosResponse<string> = await axios.post<string>(
@@ -218,7 +218,7 @@ export const useAuthStore = defineStore({
         /**
          * パスワード変更処理
          */
-        async setPassword() {
+        async setPassword(): Promise<void> {
             try {
                 const hostURL = apiBaseUrl();
                 const response: AxiosResponse = await axios.post(
@@ -252,7 +252,7 @@ export const useAuthStore = defineStore({
         /**
          * メールアドレス変更処理
          */
-        async setEmail() {
+        async setEmail(): Promise<void> {
             try {
                 const hostURL = apiBaseUrl();
                 const response: AxiosResponse = await axios.post(
