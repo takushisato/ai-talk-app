@@ -67,10 +67,11 @@ const id = props.id;
  * スレッド内のAIとの過去のやり取りを取得します
  */
 async function getTalks() {
-    const { data, error } = await useFetch(hostURL + 'ai-talk/get-talks/' + id, {
+    const { data, error } = await useFetch(hostURL + 'ai_talk/get_talks/' + id, {
         method: 'GET',
         headers: { Authorization: 'Token ' + authStore.$state.token },
     });
+    console.log(data);
     if (error.value == null) {
         const dataValue: any = data.value;
         talks = dataValue.results;
