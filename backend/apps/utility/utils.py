@@ -8,14 +8,14 @@ env = environ.Env()
 SECRET_KEY = env('SECRET_KEY')
 openai.api_key = SECRET_KEY
 
-def chat_gpt(prompt):
+async def chat_gpt_async(prompt):
     """
-    GPT-4を使用してプロンプトを処理する関数。
+    GPT-3.5-turboを使用してプロンプトを処理する関数。
     """
     try:
-        # Chat API を使用して応答を生成
-        response = openai.ChatCompletion.acreate(
-            model="gpt-4",
+        # 非同期で ChatGPT にリクエストを送る
+        response = await openai.ChatCompletion.acreate(
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": prompt}
@@ -26,16 +26,12 @@ def chat_gpt(prompt):
             frequency_penalty=0.0,
             presence_penalty=0.0,
         )
-
-        # 応答のテキスト部分を抽出
+        # 応答のテキスト部分を返す
         return response["choices"][0]["message"]["content"].strip()
-
-    except openai.AuthenticationError as e:
-        return f"認証エラー: {str(e)}"
-    except openai.OpenAIError as e:
+    except openai.error.OpenAIError as e:
+        # エラー処理を実装
         return f"OpenAIエラー: {str(e)}"
-    except Exception as e:
-        return f"予期しないエラーが発生しました: {str(e)}"
+
 
 def create_prompt(question, file_name):
     """

@@ -1,4 +1,4 @@
-import requests
+import asyncio
 from rest_framework import viewsets, generics
 from rest_framework.permissions import (
     IsAuthenticated,
@@ -8,7 +8,7 @@ from server.settings.permissions import IsOwnerOnly
 from .models import Thread, QuestionAndAnswer
 from .serializers import ThreadCrudSerializer, ThreadListSerializer, QuestionAndAnswerCrudSerializer, \
     QuestionAndAnswerListSerializer
-from apps.utility.utils import chat_gpt, create_prompt
+from apps.utility.utils import chat_gpt_async, create_prompt
 
 class ThreadCrud(viewsets.ModelViewSet):
     """
@@ -52,8 +52,8 @@ class QuestionAndAnswerCrud(viewsets.ModelViewSet):
         if question:
             # Chat-GPTに投げる命令文を生成
             prompt = create_prompt(question, "oder_sheet.txt")
-            # Chat-GPTへリクエストを投げる
-            response = chat_gpt(prompt)
+            # 非同期関数を同期的に呼び出す
+            response = asyncio.run(chat_gpt_async(prompt))
             if response:
                 # ChatGPTから返答があった場合
                 context = {'input_text': question,
@@ -68,7 +68,6 @@ class QuestionAndAnswerCrud(viewsets.ModelViewSet):
             else:
                 # ChatGPTから返答が無かった場合はreturnで処理を終える
                 return
-
 
 class QuestionAndAnswerList(generics.ListAPIView):
     """
