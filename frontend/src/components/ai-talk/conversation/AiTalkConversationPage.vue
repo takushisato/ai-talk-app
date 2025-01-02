@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="loading"><LoadingAnimationParts /></v-dialog>
     <h3>AIに質問してみよう</h3>
-    <div v-for="(talk, key) in talks" style="margin-top: 30px; margin-bottom: 20px">
+    <div v-for="(talk, key) in aiTalkStore.talks" style="margin-top: 30px; margin-bottom: 20px">
         <v-icon class="mr-0 mb-2" style="float: right" @click="deleteQuestionAndAnswer(talk.id, key)">{{
             'mdi-comment-remove-outline'
         }}</v-icon>
@@ -22,7 +22,8 @@
     <v-form @submit.prevent>
         <label>AIにおすすめのレシピを聞いてみよう</label>
         <v-text-field label="食材や調理方法など" variant="solo" type="name" v-model="postQuestion"></v-text-field>
-        <v-btn @click="postTalk()">AIに質問する</v-btn>
+        <v-btn @click="">AIに質問する</v-btn>
+        <!-- <v-btn @click="postTalk()">AIに質問する</v-btn> -->
     </v-form>
 
     <!-- <SnackBar v-if="!!errorResult" :errorMessages="errorMessages" @closeSnack="closeSnack" /> -->
@@ -47,8 +48,7 @@ export default {
 </script>
 <script setup lang="ts">
 import { useAuthStore } from '~/composables/common/use-auth-store';
-const authStore = useAuthStore();
-const hostURL = apiBaseUrl();
+import { useAiTalkStore } from '~/composables/ai-talk/use-ai-talk-store';
 let dialog: globalThis.Ref<boolean> = ref(false);
 let loading: globalThis.Ref<boolean> = ref(false);
 let nextPage: globalThis.Ref<string> = ref('');
@@ -58,30 +58,39 @@ let errorResult: globalThis.Ref<boolean> = ref(false);
 let talks: any = ref([]);
 let postQuestion: globalThis.Ref<string> = ref('');
 
+const aiTalkStore = useAiTalkStore();
+const authStore = useAuthStore();
+const hostURL = apiBaseUrl();
+
 const props = defineProps<{
-    id: string | string[];
+    id: string | undefined;
 }>();
 const id = props.id;
+
+onMounted(() => {
+    if (id) {
+        aiTalkStore.fetchThreadTalks(id);
+    }
+});
 
 /**
  * スレッド内のAIとの過去のやり取りを取得します
  */
-async function getTalks() {
-    const { data, error } = await useFetch(hostURL + 'ai_talk/get_talks/' + id, {
-        method: 'GET',
-        headers: { Authorization: 'Token ' + authStore.$state.token },
-    });
-    console.log(data);
-    if (error.value == null) {
-        const dataValue: any = data.value;
-        talks = dataValue.results;
-        nextPage = dataValue.next;
-        previousPage = dataValue.previousPage;
-    } else {
-        displayError();
-    }
-}
-await getTalks();
+// async function getTalks() {
+//     const { data, error } = await useFetch(hostURL + 'ai_talk/get_talks/' + id, {
+//         method: 'GET',
+//         headers: { Authorization: 'Token ' + authStore.$state.token },
+//     });
+//     if (error.value == null) {
+//         const dataValue: any = data.value;
+//         talks = dataValue.results;
+//         nextPage = dataValue.next;
+//         previousPage = dataValue.previousPage;
+//     } else {
+//         displayError();
+//     }
+// }
+// await getTalks();
 
 /**
  * ページネーションで次のオブジェクトを取得します
@@ -128,29 +137,29 @@ async function previousPagination() {
 /**
  * 質問を投稿します
  */
-async function postTalk() {
-    // 質問が入力されているか判定。されていない場合はreturnで終了
-    if (postQuestion.value != '') {
-        loading.value = true;
-        const postData = {
-            thread: id,
-            question: postQuestion.value,
-        };
-        const { data, error } = await useFetch(hostURL + 'ai_talk/question-and-answer/', {
-            method: 'POST',
-            headers: { Authorization: 'Token ' + authStore.$state.token },
-            body: postData,
-        });
-        if (error.value == null) {
-            location.reload();
-        } else {
-            displayError();
-        }
-        loading.value = false;
-    } else {
-        return;
-    }
-}
+// async function postTalk() {
+//     // 質問が入力されているか判定。されていない場合はreturnで終了
+//     if (postQuestion.value != '') {
+//         loading.value = true;
+//         const postData = {
+//             thread: id,
+//             question: postQuestion.value,
+//         };
+//         const { data, error } = await useFetch(hostURL + 'ai_talk/question-and-answer/', {
+//             method: 'POST',
+//             headers: { Authorization: 'Token ' + authStore.$state.token },
+//             body: postData,
+//         });
+//         if (error.value == null) {
+//             location.reload();
+//         } else {
+//             displayError();
+//         }
+//         loading.value = false;
+//     } else {
+//         return;
+//     }
+// }
 
 /**
  * backendからAIとの会話を削除します
