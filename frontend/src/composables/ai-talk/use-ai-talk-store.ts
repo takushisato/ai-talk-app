@@ -7,8 +7,8 @@ import axios from 'axios';
 import { useAuthStore } from '~/composables/common/use-auth-store';
 
 type TalkCollection = {
-    next: string | null;
-    previous: string | null;
+    next: string;
+    previous: string;
     results: TalkDetail[];
 };
 
@@ -25,8 +25,8 @@ export const useAiTalkStore = defineStore({
     state: () => ({
         talk: {} as TalkDetail,
         talks: [] as TalkDetail[],
-        nextPage: null as string | null,
-        previousPage: null as string | null,
+        nextPage: '' as string,
+        previousPage: '' as string,
         talkDeleteDialog: false,
         errorMessage: '' as string,
     }),
@@ -53,8 +53,34 @@ export const useAiTalkStore = defineStore({
                 const axiosError = error as AxiosError<ErrorResponse>;
                 if (axiosError.response) {
                     const errorData = axiosError.response.data;
-                    const errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
-                    processErrorResponse(axiosError.response.status, errorMessage);
+                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
+                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
+                } else {
+                    console.error('Unknown error occurred:', error);
+                }
+            }
+        },
+
+        /**
+         * ページネーションで次のオブジェクトを取得します
+         *
+         * TODO 動作確認
+         */
+        async nextPagination() {
+            try {
+                const authStore = useAuthStore();
+                const response: AxiosResponse<TalkCollection> = await axios.get(this.$state.nextPage, {
+                    headers: {
+                        Authorization: 'Token ' + authStore.$state.token,
+                    },
+                });
+                this.$state.talks = response.data.results;
+            } catch (error) {
+                const axiosError = error as AxiosError<ErrorResponse>;
+                if (axiosError.response) {
+                    const errorData = axiosError.response.data;
+                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
+                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
                 } else {
                     console.error('Unknown error occurred:', error);
                 }
