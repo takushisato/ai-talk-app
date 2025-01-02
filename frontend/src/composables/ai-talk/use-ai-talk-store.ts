@@ -30,6 +30,7 @@ export const useAiTalkStore = defineStore({
         talkDeleteDialog: false,
         errorMessage: '' as string,
         postQuestion: '' as string,
+        errorResult: false,
     }),
     getters: {},
     actions: {
@@ -149,7 +150,7 @@ export const useAiTalkStore = defineStore({
          *
          * TODO 動作確認
          */
-        async deleteTalk(id: string): Promise<void> {
+        async deleteTalk(id: number): Promise<void> {
             try {
                 const authStore = useAuthStore();
                 const response: AxiosResponse = await axios.delete('ai_talk/question-and-answer/' + id, {
@@ -183,9 +184,17 @@ export const useAiTalkStore = defineStore({
          *
          * TODO 動作確認
          */
-        deleteQuestionAndAnswer(id: string, key: number): void {
+        deleteQuestionAndAnswer(id: number, key: number): void {
             this.deleteTalk(id);
             this.deleteTalkObject(key);
+        },
+
+        /**
+         * スナックバーを閉じる
+         */
+        closeSnack(): void {
+            this.$state.errorMessage = '';
+            this.$state.errorResult = false;
         },
     },
 });
