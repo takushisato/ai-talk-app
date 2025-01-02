@@ -27,6 +27,8 @@ export const useAiTalkStore = defineStore({
         talks: [] as TalkDetail[],
         nextPage: null as string | null,
         previousPage: null as string | null,
+        talkDeleteDialog: false,
+        errorMessage: '' as string,
     }),
     getters: {},
     actions: {
