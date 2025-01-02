@@ -86,5 +86,31 @@ export const useAiTalkStore = defineStore({
                 }
             }
         },
+
+        /**
+         * ページネーションで前のオブジェクトを取得します
+         *
+         * TODO 動作確認
+         */
+        async previousPagination() {
+            try {
+                const authStore = useAuthStore();
+                const response: AxiosResponse<TalkCollection> = await axios.get(this.$state.previousPage, {
+                    headers: {
+                        Authorization: 'Token ' + authStore.$state.token,
+                    },
+                });
+                this.$state.talks = response.data.results;
+            } catch (error) {
+                const axiosError = error as AxiosError<ErrorResponse>;
+                if (axiosError.response) {
+                    const errorData = axiosError.response.data;
+                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
+                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
+                } else {
+                    console.error('Unknown error occurred:', error);
+                }
+            }
+        },
     },
 });
