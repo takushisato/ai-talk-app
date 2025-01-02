@@ -5,6 +5,11 @@ from apps.utility.models import BaseModel
 
 
 class UserManager(BaseUserManager):
+    """
+    User作成のメソッド
+
+    通常のUserもしくはsuperuserを作成
+    """
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('メールアドレスは必須です')
@@ -27,6 +32,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):
+    """
+    カスタムユーザーモデル
+    """
     email = models.EmailField("メールアドレス", max_length=255, unique=True)
     name = models.CharField("ニックネーム", max_length=255, unique=True)
 

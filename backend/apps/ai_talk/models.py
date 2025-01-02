@@ -3,11 +3,11 @@ from apps.account.models import User
 from apps.utility.models import BaseModel
 
 
-"""
-会話のスレッドのモデル。
-（AIとの会話をスレッド毎に分けて管理するために使用）
-"""
 class Thread(BaseModel):
+    """
+    会話のスレッドのモデル。
+    （AIとの会話をスレッド毎に分けて管理するために使用）
+    """
     user = models.ForeignKey(User, related_name="thread", on_delete=models.CASCADE)
     title = models.CharField('スレッドのタイトル', max_length=200)
 
@@ -20,10 +20,10 @@ class Thread(BaseModel):
         return self.title
 
 
-"""
-AIとの会話を記録するモデル。
-"""
 class QuestionAndAnswer(BaseModel):
+    """
+    AIとの会話を記録するモデル。
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     thread = models.ForeignKey(Thread, related_name="question_and_answer", on_delete=models.CASCADE)
     question = models.CharField('ユーザーからの質問', max_length=2000)

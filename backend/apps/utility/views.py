@@ -4,12 +4,12 @@ from djoser.views import TokenCreateView
 from djoser import utils
 from djoser.conf import settings
 
-"""
-ログインする度に認証トークンを再作成するクラス
-
-このクラスを使用する事で毎ログイン時に、認証トークンを更新する事ができます
-"""
 class CustomTokenCreateView(TokenCreateView):
+    """
+    ログインする度に認証トークンを再作成するクラス
+
+    このクラスを使用する事で毎ログイン時に、認証トークンを更新する事ができます
+    """
 
     def _action(self, serializer):
         user = serializer.user

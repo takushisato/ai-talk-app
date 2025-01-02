@@ -5,6 +5,9 @@ from templated_mail.mail import BaseEmailMessage
 from django.conf import settings
 
 class EmailManager(BaseEmailMessage):
+    """
+    emailのベースクラス
+    """
     def send(self, to, *args, **kwags):
         self.render()
         self.to = to
@@ -17,8 +20,10 @@ class EmailManager(BaseEmailMessage):
         )
         super(BaseEmailMessage, self).send(*args, **kwags)
 
-# 新規会員登録後のアクティベートメール
 class ActivationEmail(EmailManager):
+    """
+    新規会員登録後のアクティベートメール
+    """
     template_name = 'account/activation.html'
 
     def get_context_data(self):
@@ -30,8 +35,10 @@ class ActivationEmail(EmailManager):
         context["url"] = settings.DJOSER["ACTIVATION_URL"].format(**context)
         return context
 
-# アクティベート完了メール
 class ConfirmationEmail(EmailManager):
+    """
+    アクティベート完了メール
+    """
     template_name = 'account/confirmation.html'
 
     def get_context_data(self):
@@ -40,8 +47,10 @@ class ConfirmationEmail(EmailManager):
         context["name"] = user.name
         return context
 
-# パスワード変更リクエストメール
 class PasswordResetEmail(BaseEmailMessage):
+    """
+    パスワード変更リクエストメール
+    """
     template_name = 'account/password_reset.html'
 
     def get_context_data(self):
@@ -53,8 +62,10 @@ class PasswordResetEmail(BaseEmailMessage):
         context["url"] = settings.DJOSER["PASSWORD_RESET_CONFIRM_URL"].format(**context)
         return context
 
-# パスワード変更完了メール
 class PasswordChangedConfirmationEmail(BaseEmailMessage):
+    """
+    パスワード変更完了メール
+    """
     template_name = 'account/password_changed_confirmation.html'
 
     def get_context_data(self):
@@ -63,8 +74,10 @@ class PasswordChangedConfirmationEmail(BaseEmailMessage):
         context["name"] = user.name
         return context
 
-# メールアドレス変更リクエストメール（モデルを変更しているためユーザーネームではない）
 class UsernameResetEmail(BaseEmailMessage):
+    """
+    メールアドレス変更リクエストメール
+    """
     template_name = 'account/username_reset.html'
 
     def get_context_data(self):
@@ -76,8 +89,10 @@ class UsernameResetEmail(BaseEmailMessage):
         context["url"] = settings.DJOSER["USERNAME_RESET_CONFIRM_URL"].format(**context)
         return context
 
-# メールアドレス変更完了メール（モデルを変更しているためユーザーネームではない）
 class UsernameChangedConfirmationEmail(BaseEmailMessage):
+    """
+    メールアドレス変更完了メール
+    """
     template_name = 'account/username_changed_confirmation.html'
 
     def get_context_data(self):

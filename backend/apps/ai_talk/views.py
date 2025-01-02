@@ -10,12 +10,12 @@ from .serializers import ThreadCrudSerializer, ThreadListSerializer, QuestionAnd
     QuestionAndAnswerListSerializer
 from apps.utility.utils import chat_gpt, create_prompt
 
-"""
-スレッドの新規投稿、編集、削除
-
-perform_createでユーザーをトークンから選定する様にしています
-"""
 class ThreadCrud(viewsets.ModelViewSet):
+    """
+    スレッドの新規投稿、編集、削除
+
+    perform_createでユーザーをトークンから選定する様にしています
+    """
     queryset = Thread.objects.all()
     serializer_class = ThreadCrudSerializer
     permission_classes = [IsOwnerOnly, IsAuthenticated]
@@ -24,12 +24,12 @@ class ThreadCrud(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-"""
-ユーザー毎のスレッドの一括取得
-
-リクエストヘッダのトークンからユーザーを選定し、そのユーザーの作成したスレッドを一括で返します
-"""
 class ThreadList(generics.ListAPIView):
+    """
+    ユーザー毎のスレッドの一括取得
+
+    リクエストヘッダのトークンからユーザーを選定し、そのユーザーの作成したスレッドを一括で返します
+    """
     queryset = Thread.objects.all()
     serializer_class = ThreadListSerializer
     permission_classes = [IsOwnerOnly, IsAuthenticated]
@@ -39,10 +39,10 @@ class ThreadList(generics.ListAPIView):
         return Thread.objects.all().filter(user=pk).order_by('updated_at').reverse()
 
 
-"""
-質問と回答の新規投稿、編集、削除
-"""
 class QuestionAndAnswerCrud(viewsets.ModelViewSet):
+    """
+    質問と回答の新規投稿、編集、削除
+    """
     queryset = QuestionAndAnswer.objects.all()
     serializer_class = QuestionAndAnswerCrudSerializer
     permission_classes = [IsOwnerOnly, IsAuthenticated]
@@ -70,11 +70,11 @@ class QuestionAndAnswerCrud(viewsets.ModelViewSet):
                 return
 
 
-"""
-スレッド毎にAIとのやり取りを一括取得
-
-"""
 class QuestionAndAnswerList(generics.ListAPIView):
+    """
+    スレッド毎にAIとのやり取りを一括取得
+
+    """
     queryset = QuestionAndAnswer.objects.all()
     serializer_class = QuestionAndAnswerListSerializer
     permission_classes = [IsAuthenticated]
