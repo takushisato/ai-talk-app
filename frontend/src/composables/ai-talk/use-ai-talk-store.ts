@@ -29,6 +29,7 @@ export const useAiTalkStore = defineStore({
         previousPage: '' as string,
         talkDeleteDialog: false,
         errorMessage: '' as string,
+        postQuestion: '' as string,
     }),
     getters: {},
     actions: {
@@ -101,6 +102,34 @@ export const useAiTalkStore = defineStore({
                     },
                 });
                 this.$state.talks = response.data.results;
+            } catch (error) {
+                const axiosError = error as AxiosError<ErrorResponse>;
+                if (axiosError.response) {
+                    const errorData = axiosError.response.data;
+                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
+                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
+                } else {
+                    console.error('Unknown error occurred:', error);
+                }
+            }
+        },
+
+        /**
+         * 質問を投稿します
+         */
+        async postQuestionToAI(id: string) {
+            if (!this.$state.postQuestion) return; // 質問がnullの場合、returnで終了
+            try {
+                const authStore = useAuthStore();
+                const response: AxiosResponse = await axios.post('ai_talk/question-and-answer/', {
+                    headers: {
+                        Authorization: 'Token ' + authStore.$state.token,
+                        body: {
+                            thread: id,
+                            question: this.$state.postQuestion,
+                        },
+                    },
+                });
             } catch (error) {
                 const axiosError = error as AxiosError<ErrorResponse>;
                 if (axiosError.response) {
