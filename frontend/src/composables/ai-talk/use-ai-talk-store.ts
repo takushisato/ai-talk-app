@@ -116,6 +116,8 @@ export const useAiTalkStore = defineStore({
 
         /**
          * 質問を投稿します
+         *
+         * TODO　動作確認
          */
         async postQuestionToAI(id: string) {
             if (!this.$state.postQuestion) return; // 質問がnullの場合、returnで終了
@@ -140,6 +142,50 @@ export const useAiTalkStore = defineStore({
                     console.error('Unknown error occurred:', error);
                 }
             }
+        },
+
+        /**
+         * backendからAIとの会話を削除します
+         *
+         * TODO 動作確認
+         */
+        async deleteTalk(id: string) {
+            try {
+                const authStore = useAuthStore();
+                const response: AxiosResponse = await axios.delete('ai_talk/question-and-answer/' + id, {
+                    headers: {
+                        Authorization: 'Token ' + authStore.$state.token,
+                    },
+                });
+            } catch (error) {
+                const axiosError = error as AxiosError<ErrorResponse>;
+                if (axiosError.response) {
+                    const errorData = axiosError.response.data;
+                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
+                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
+                } else {
+                    console.error('Unknown error occurred:', error);
+                }
+            }
+        },
+
+        /**
+         * 画面上のtalksから要素をリアクティブに削除します
+         *
+         * TODO 動作確認
+         */
+        deleteTalkObject(key: number) {
+            this.$state.talks.splice(key, 1);
+        },
+
+        /**
+         * 画面内の要素と、backendの要素２つを同時に削除します
+         *
+         * TODO 動作確認
+         */
+        deleteQuestionAndAnswer(id: string, key: number) {
+            this.deleteTalk(id);
+            this.deleteTalkObject(key);
         },
     },
 });
