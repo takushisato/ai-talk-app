@@ -1,6 +1,6 @@
+import os
 import openai
 import environ
-import os
 from django.conf import settings
 
 # 環境変数からAPIキーを取得
@@ -10,17 +10,17 @@ openai.api_key = SECRET_KEY
 
 def chat_gpt(prompt):
     """
-    GPT-4またはGPT-3.5-turboを使用してプロンプトを処理する関数。
+    GPT-4を使用してプロンプトを処理する関数。
     """
     try:
-        # OpenAI APIを使用して応答を生成
-        response = openai.ChatCompletion.create(
+        # Chat API を使用して応答を生成
+        response = openai.ChatCompletion.acreate(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.0,
+            temperature=0.7,
             max_tokens=300,
             top_p=1.0,
             frequency_penalty=0.0,
@@ -35,8 +35,7 @@ def chat_gpt(prompt):
     except openai.OpenAIError as e:
         return f"OpenAIエラー: {str(e)}"
     except Exception as e:
-        return f"予期しないエラー: {str(e)}"
-
+        return f"予期しないエラーが発生しました: {str(e)}"
 
 def create_prompt(question, file_name):
     """
