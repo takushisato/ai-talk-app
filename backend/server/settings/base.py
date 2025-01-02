@@ -53,7 +53,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     'apps.account',
-    'apps.setting',
     'apps.ai_talk',
 ]
 
