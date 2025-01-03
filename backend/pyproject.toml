@@ -19,12 +19,9 @@ django-filter = "^24.2"
 djoser = "^2.2.2"
 environ = "^1.0"
 openai = "0.28"
+crashtest = "^0.4.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.0"
-black = "^22.0"

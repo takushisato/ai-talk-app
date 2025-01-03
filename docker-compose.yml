@@ -63,12 +63,3 @@ services:
       - 3000:3000
     depends_on:
       - backend
-
-  storybook:
-    <<: *frontend-base
-    command: >
-      sh -c "
-      yarn storybook
-      "
-    ports:
-      - 6060:6060

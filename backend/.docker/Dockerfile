@@ -1,61 +1,67 @@
-# ベースイメージ
 ARG PYTHON_VERSION
+
+# ベース作成
 FROM python:$PYTHON_VERSION-bullseye as python-base
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
+    \
     PIP_NO_CACHE_DIR=off \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
+    \
+    POETRY_VERSION=1.1.5 \
     POETRY_HOME="/opt/poetry" \
     POETRY_VIRTUALENVS_CREATE=false \
-    PATH="$POETRY_HOME/bin:$PATH"
+    \
+    PYSETUP_PATH="/opt/pysetup"
 
-# ベースセットアップ
-RUN apt update && apt install -y libpq5 libxml2 libmariadb-dev && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+ENV PATH="$POETRY_HOME/bin:$PATH"
+
+# 初期化
+FROM python-base as initial
+RUN apt update \
+  && apt install -y libpq5 libxml2 libmariadb-dev \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN pip install --upgrade pip setuptools wheel
-RUN pip install "poetry>=1.6.1"
+RUN pip install poetry
 RUN pip install uwsgi
 
-# 開発用ステージ
-FROM python-base as development
-WORKDIR /opt/app
+# コンテナ内で仮想環境の作成を無効
+RUN poetry config virtualenvs.create false
+RUN poetry config virtualenvs.in-project true
+
+FROM initial as development-base
+ENV POETRY_NO_INTERACTION=1
 COPY poetry.lock pyproject.toml ./
 
-# 開発依存関係をインストール
-RUN poetry install --with dev
 
-COPY . /opt/app
+FROM development-base as development
+RUN poetry install
 
-# ビルドステージ（本番用）
-FROM python-base as builder
 WORKDIR /opt/app
-COPY poetry.lock pyproject.toml ./
+#COPY . /opt/app
 
-# 本番用依存関係のみインストール
-RUN poetry install --without dev
+FROM development-base as builder-base
+RUN poetry install --no-dev
 
-# 実行ステージ
+# 実行用コンテナ
 FROM python:$PYTHON_VERSION-slim-bullseye as production
 
-# 必要なファイルをビルダーからコピー
-COPY --from=builder /usr/local/lib/python${PYTHON_VERSION}/site-packages /usr/local/lib/python${PYTHON_VERSION}/site-packages
-COPY --from=builder /usr/local/bin/poetry /usr/local/bin/poetry
-COPY --from=builder /usr/local/bin/uwsgi /usr/local/bin/uwsgi
+ARG PYTHON_VERSION
 
-# アプリケーションの準備
-WORKDIR /opt/app
-COPY . /opt/app
+COPY --from=builder-base /usr/local/lib/python$PYTHON_VERSION/site-packages /usr/local/lib/python$PYTHON_VERSION/site-packages
+COPY --from=builder-base /usr/local/bin/poetry /usr/local/bin/poetry
+COPY --from=builder-base /usr/local/bin/uwsgi /usr/local/bin/uwsgi
 
-# ログディレクトリの準備
-RUN useradd -r -s /bin/false uwsgiusr \
-    && mkdir -p /opt/app/src/logs/app_logs \
-    && touch /opt/app/src/logs/server.log \
-    && chown -R uwsgiusr /opt/app/src/logs
+RUN useradd -r -s /bin/false uwsgiusr
+RUN mkdir -p /opt/app/src/logs/app_logs
+RUN touch /opt/app/src/logs/server.log
+RUN chown -R uwsgiusr /opt/app/src/logs
 
 USER uwsgiusr
 
-# uwsgi の設定を指定
 COPY deploy/uwsgi.ini /opt/app
-CMD ["uwsgi", "--ini", "/opt/app/deploy/uwsgi.ini"]
+COPY . /opt/app
