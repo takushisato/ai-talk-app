@@ -117,22 +117,25 @@ export const useAiTalkStore = defineStore({
 
         /**
          * 質問を投稿します
-         *
-         * TODO　動作確認
          */
         async postQuestionToAI(id: string): Promise<void> {
             if (!this.$state.postQuestion) return; // 質問がnullの場合、returnで終了
             try {
                 const authStore = useAuthStore();
-                const response: AxiosResponse = await axios.post('ai_talk/question-and-answer/', {
-                    headers: {
-                        Authorization: 'Token ' + authStore.$state.token,
-                        body: {
-                            thread: id,
-                            question: this.$state.postQuestion,
-                        },
+                const hostURL = apiBaseUrl();
+                const response: AxiosResponse = await axios.post(
+                    hostURL + 'ai_talk/question-and-answer/',
+                    {
+                        thread: id,
+                        question: this.$state.postQuestion,
                     },
-                });
+                    {
+                        headers: {
+                            Authorization: `Token ${authStore.$state.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
             } catch (error) {
                 const axiosError = error as AxiosError<ErrorResponse>;
                 if (axiosError.response) {

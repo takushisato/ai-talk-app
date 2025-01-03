@@ -27,7 +27,7 @@
             type="name"
             v-model="aiTalkStore.$state.postQuestion"
         ></v-text-field>
-        <v-btn @click="aiTalkStore.postQuestionToAI">AIに質問する</v-btn>
+        <v-btn v-if="id" @click="aiTalkStore.postQuestionToAI(id)">AIに質問する</v-btn>
     </v-form>
 
     <SnackBar
