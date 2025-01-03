@@ -1,0 +1,74 @@
+version: "3.8"
+
+services:
+  backend-base: &backend-base
+    build:
+      context: ./backend
+      dockerfile: .docker/Dockerfile
+      target: development
+      args:
+        PYTHON_VERSION: "3.10"
+    volumes:
+      - ./backend:/opt/app
+    environment:
+      - DATABASE_URL=sqlite:///service_db.sqlite3
+
+  backend:
+    <<: *backend-base
+    container_name: backend
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "
+      cd /opt/app/ &&
+      poetry install &&
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
+
+  backend-prod:
+    <<: *backend-base
+    build:
+      context: ./backend
+      dockerfile: .docker/Dockerfile
+      target: production
+      args:
+        PYTHON_VERSION: "3.10"
+    container_name: backend-prod
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "uwsgi --ini /opt/app/deploy/uwsgi.ini"
+
+  runner:
+    <<: *backend-base
+    command: >
+      sh -c "
+      cd /opt/app/ &&
+      poetry install &&
+      /bin/bash
+      "
+
+  frontend-base: &frontend-base
+    build:
+      context: ./frontend
+      dockerfile: .docker/Dockerfile
+
+  frontend:
+    <<: *frontend-base
+    command: >
+      sh -c "
+      yarn start
+      "
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+
+  storybook:
+    <<: *frontend-base
+    command: >
+      sh -c "
+      yarn storybook
+      "
+    ports:
+      - 6060:6060
