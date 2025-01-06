@@ -7,7 +7,7 @@ from apps.utility.views import CustomTokenCreateView
 
 router = DefaultRouter()
 router.register('thread', ThreadCrud)
-router.register('question-and-answer', QuestionAndAnswerCrud)
+router.register('question_and_answer', QuestionAndAnswerCrud)
 
 urlpatterns = [
     # admin

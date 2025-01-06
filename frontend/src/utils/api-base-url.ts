@@ -1,4 +1,4 @@
 export function apiBaseUrl() {
-    const baseUrl = 'http://localhost:8000/';
+    const baseUrl = 'http://localhost:8425/';
     return baseUrl;
 }
