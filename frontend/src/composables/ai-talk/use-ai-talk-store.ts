@@ -5,6 +5,7 @@ import type { ErrorResponse } from '~/domain/api/error-response';
 import type { AxiosResponse, AxiosError } from 'axios';
 import axios from 'axios';
 import { useAuthStore } from '~/composables/common/use-auth-store';
+import { apiClient } from '~/domain/api/apiClient';
 
 type TalkCollection = {
     next: string;
@@ -38,29 +39,13 @@ export const useAiTalkStore = defineStore({
          * スレッド内のAIとの過去のやり取りを取得します
          */
         async fetchThreadTalks(id: string): Promise<void> {
-            try {
-                const hostURL = apiBaseUrl();
-                const authStore = useAuthStore();
-                const response: AxiosResponse<TalkCollection> = await axios.get(`${hostURL}ai_talk/get_talks/${id}`, {
-                    headers: {
-                        Authorization: 'Token ' + authStore.$state.token,
-                    },
-                });
-                const dataValue: TalkCollection = response.data;
-                this.talks = dataValue.results;
-                this.nextPage = dataValue.next;
-                this.previousPage = dataValue.previous;
-                console.log(dataValue);
-            } catch (error) {
-                const axiosError = error as AxiosError<ErrorResponse>;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data;
-                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
-                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
-                } else {
-                    console.error('Unknown error occurred:', error);
-                }
-            }
+            const data = await apiClient<TalkCollection>({
+                url: `ai_talk/get_talks/${id}`,
+                method: 'GET',
+            });
+            this.talks = data.results;
+            this.nextPage = data.next;
+            this.previousPage = data.previous;
         },
 
         /**
@@ -69,24 +54,11 @@ export const useAiTalkStore = defineStore({
          * TODO 動作確認
          */
         async nextPagination(): Promise<void> {
-            try {
-                const authStore = useAuthStore();
-                const response: AxiosResponse<TalkCollection> = await axios.get(this.$state.nextPage, {
-                    headers: {
-                        Authorization: 'Token ' + authStore.$state.token,
-                    },
-                });
-                this.$state.talks = response.data.results;
-            } catch (error) {
-                const axiosError = error as AxiosError<ErrorResponse>;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data;
-                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
-                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
-                } else {
-                    console.error('Unknown error occurred:', error);
-                }
-            }
+            const data = await apiClient<TalkCollection>({
+                url: this.$state.nextPage,
+                method: 'GET',
+            });
+            this.$state.talks = data.results;
         },
 
         /**
@@ -95,82 +67,36 @@ export const useAiTalkStore = defineStore({
          * TODO 動作確認
          */
         async previousPagination(): Promise<void> {
-            try {
-                const authStore = useAuthStore();
-                const response: AxiosResponse<TalkCollection> = await axios.get(this.$state.previousPage, {
-                    headers: {
-                        Authorization: 'Token ' + authStore.$state.token,
-                    },
-                });
-                this.$state.talks = response.data.results;
-            } catch (error) {
-                const axiosError = error as AxiosError<ErrorResponse>;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data;
-                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
-                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
-                } else {
-                    console.error('Unknown error occurred:', error);
-                }
-            }
+            const data = await apiClient<TalkCollection>({
+                url: this.$state.previousPage,
+                method: 'GET',
+            });
+            this.$state.talks = data.results;
         },
 
         /**
          * 質問を投稿します
          */
         async postQuestionToAI(id: string): Promise<void> {
-            if (!this.$state.postQuestion) return; // 質問がnullの場合、returnで終了
-            try {
-                const authStore = useAuthStore();
-                const hostURL = apiBaseUrl();
-                const response: AxiosResponse = await axios.post(
-                    hostURL + 'ai_talk/question-and-answer/',
-                    {
-                        thread: id,
-                        question: this.$state.postQuestion,
-                    },
-                    {
-                        headers: {
-                            Authorization: `Token ${authStore.$state.token}`,
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                );
-            } catch (error) {
-                const axiosError = error as AxiosError<ErrorResponse>;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data;
-                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
-                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
-                } else {
-                    console.error('Unknown error occurred:', error);
-                }
-            }
+            if (!this.postQuestion) return;
+            await apiClient({
+                url: 'ai_talk/question-and-answer/',
+                method: 'POST',
+                data: {
+                    thread: id,
+                    question: this.postQuestion,
+                },
+            });
         },
 
         /**
-         * backendからAIとの会話を削除します
-         *
-         * TODO 動作確認
+         * AIとの会話を削除します
          */
         async deleteTalk(id: number): Promise<void> {
-            try {
-                const authStore = useAuthStore();
-                const response: AxiosResponse = await axios.delete('ai_talk/question-and-answer/' + id, {
-                    headers: {
-                        Authorization: 'Token ' + authStore.$state.token,
-                    },
-                });
-            } catch (error) {
-                const axiosError = error as AxiosError<ErrorResponse>;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data;
-                    this.$state.errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
-                    processErrorResponse(axiosError.response.status, this.$state.errorMessage);
-                } else {
-                    console.error('Unknown error occurred:', error);
-                }
-            }
+            await apiClient({
+                url: `ai_talk/question-and-answer/${id}`,
+                method: 'DELETE',
+            });
         },
 
         /**
