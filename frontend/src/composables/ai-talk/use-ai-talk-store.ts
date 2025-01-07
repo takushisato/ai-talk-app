@@ -1,10 +1,4 @@
 import { defineStore } from 'pinia';
-import { apiBaseUrl } from '~/utils/api-base-url';
-import { processErrorResponse } from '~/domain/api/process-error-response';
-import type { ErrorResponse } from '~/domain/api/error-response';
-import type { AxiosResponse, AxiosError } from 'axios';
-import axios from 'axios';
-import { useAuthStore } from '~/composables/common/use-auth-store';
 import { apiClient } from '~/domain/api/apiClient';
 
 type TalkCollection = {
