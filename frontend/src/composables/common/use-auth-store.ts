@@ -1,12 +1,8 @@
 import { defineStore } from 'pinia';
-import { apiBaseUrl } from '~/utils/api-base-url';
-import { processErrorResponse } from '~/domain/api/process-error-response';
-import type { ErrorResponse } from '~/domain/api/error-response';
 import type { User } from '~/domain/auth/user';
 import type { LoginPostData, LoginResponse } from '~/domain/auth/login';
 import type { CreateUserPostData } from '~/domain/auth/create-user';
-import type { AxiosResponse, AxiosError } from 'axios';
-import axios from 'axios';
+import { apiClient } from '~/domain/api/apiClient';
 
 export const useAuthStore = defineStore({
     id: 'auth',
@@ -42,6 +38,7 @@ export const useAuthStore = defineStore({
             re_new_email: '',
             current_password: '',
         },
+        // TODO ダイアログ関係は全て共通の状態管理を作成して、そちらに移動する。エラー分のスナックバーも移動する。
         CreateUserSuccessDialog: false,
         confirmPasswordFormDialog: false,
         confirmSetPasswordDialog: false,
@@ -57,23 +54,18 @@ export const useAuthStore = defineStore({
          */
         async createUser(): Promise<void> {
             try {
-                // TODO ローディング処理を追加する
-                const hostURL = apiBaseUrl();
                 const postData: CreateUserPostData = {
                     name: this.$state.createForm.name,
                     email: this.$state.createForm.email,
                     password: this.$state.createForm.password,
                     re_password: this.$state.createForm.re_password,
                 };
-                const response: AxiosResponse = await axios.post(hostURL + 'api/auth/users/', postData);
+                await apiClient<void>({
+                    url: 'api/auth/users/',
+                    method: 'POST',
+                    data: postData,
+                });
                 this.CreateUserSuccessDialog = true;
-            } catch (error) {
-                const axiosError = error as AxiosError;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data as ErrorResponse;
-                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
-                    processErrorResponse(axiosError.response.status, errorMessage);
-                }
             } finally {
                 this.createForm.password = '';
                 this.createForm.re_password = '';
@@ -85,31 +77,20 @@ export const useAuthStore = defineStore({
          */
         async login(): Promise<void> {
             try {
-                const hostURL = apiBaseUrl();
                 const postData: LoginPostData = {
                     email: this.$state.loginForm.email,
                     password: this.$state.loginForm.password,
                 };
-                const response: AxiosResponse<LoginResponse> = await axios.post<LoginResponse>(
-                    hostURL + 'api_token_auth/',
-                    postData
-                );
-                this.token = response.data.auth_token;
-                useCookie('token', {
-                    secure: true,
-                    maxAge: 86400,
-                }).value = this.token;
+                const response = await apiClient<LoginResponse>({
+                    url: 'api_token_auth/',
+                    method: 'POST',
+                    data: postData,
+                });
+                this.token = response.auth_token;
+                useCookie('token', { secure: true, maxAge: 86400 }).value = this.token;
                 this.isAuthenticated = true;
                 this.loginSuccessDialog = true;
-                this.updateUserAuthenticationStatus();
-            } catch (error) {
-                this.isAuthenticated = false;
-                const axiosError = error as AxiosError;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data as ErrorResponse;
-                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
-                    processErrorResponse(axiosError.response.status, errorMessage);
-                }
+                await this.updateUserAuthenticationStatus();
             } finally {
                 this.loginForm.password = '';
             }
@@ -131,23 +112,11 @@ export const useAuthStore = defineStore({
          * (取得できればログイン、tokenに問題がありユーザー情報が取得できない場合はログアウトになる）
          */
         async updateUserAuthenticationStatus(): Promise<void> {
-            try {
-                const hostURL = apiBaseUrl();
-                const response: AxiosResponse<User> = await axios.get<User>(hostURL + 'api/auth/users/me/', {
-                    headers: {
-                        Authorization: 'Token ' + this.token,
-                    },
-                });
-                this.user = response.data;
-            } catch (error) {
-                await this.logout();
-                const axiosError = error as AxiosError;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data as ErrorResponse;
-                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
-                    processErrorResponse(axiosError.response.status, errorMessage);
-                }
-            }
+            const response = await apiClient<User>({
+                url: 'api/auth/users/me/',
+                method: 'GET',
+            });
+            this.user = response;
         },
 
         /**
@@ -166,23 +135,12 @@ export const useAuthStore = defineStore({
          * パスワードリセット処理
          */
         async resetPassword(): Promise<void> {
-            try {
-                const hostURL = apiBaseUrl();
-                const response: AxiosResponse<string> = await axios.post<string>(
-                    hostURL + 'api/auth/users/reset_password/',
-                    {
-                        email: this.$state.resetForm.email,
-                    }
-                );
-                this.resetPasswordSuccessDialog = true;
-            } catch (error) {
-                const axiosError = error as AxiosError;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data as ErrorResponse;
-                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
-                    processErrorResponse(axiosError.response.status, errorMessage);
-                }
-            }
+            await apiClient<void>({
+                url: 'api/auth/users/reset_password/',
+                method: 'POST',
+                data: { email: this.$state.resetForm.email },
+            });
+            this.resetPasswordSuccessDialog = true;
         },
 
         /**
@@ -190,24 +148,16 @@ export const useAuthStore = defineStore({
          */
         async resetPasswordConfirm(uid: string, token: string): Promise<void> {
             try {
-                const hostURL = apiBaseUrl();
-                const response: AxiosResponse<string> = await axios.post<string>(
-                    hostURL + 'api/auth/users/reset_password_confirm/',
-                    {
-                        uid: uid,
-                        token: token,
+                await apiClient<void>({
+                    url: 'api/auth/users/reset_password_confirm/',
+                    method: 'POST',
+                    data: {
+                        uid,
+                        token,
                         new_password: this.$state.confirmPasswordForm.new_password,
-                    }
-                );
+                    },
+                });
                 this.$state.confirmPasswordFormDialog = true;
-            } catch (error) {
-                const axiosError = error as AxiosError;
-                console.log(axiosError);
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data as ErrorResponse;
-                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
-                    processErrorResponse(axiosError.response.status, errorMessage);
-                }
             } finally {
                 this.$state.confirmPasswordForm.new_password = '';
                 this.$state.confirmPasswordForm.re_new_password = '';
@@ -220,28 +170,16 @@ export const useAuthStore = defineStore({
          */
         async setPassword(): Promise<void> {
             try {
-                const hostURL = apiBaseUrl();
-                const response: AxiosResponse = await axios.post(
-                    hostURL + 'api/auth/users/set_password/',
-                    {
+                await apiClient<void>({
+                    url: 'api/auth/users/set_password/',
+                    method: 'POST',
+                    data: {
                         new_password: this.$state.setPasswordForm.new_password,
                         re_new_password: this.$state.setPasswordForm.re_new_password,
                         current_password: this.$state.setPasswordForm.current_password,
                     },
-                    {
-                        headers: {
-                            Authorization: 'Token ' + this.token,
-                        },
-                    }
-                );
+                });
                 this.setPasswordSuccessDialog = true;
-            } catch (error) {
-                const axiosError = error as AxiosError;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data as ErrorResponse;
-                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
-                    processErrorResponse(axiosError.response.status, errorMessage);
-                }
             } finally {
                 this.$state.setPasswordForm.new_password = '';
                 this.$state.setPasswordForm.re_new_password = '';
@@ -254,28 +192,16 @@ export const useAuthStore = defineStore({
          */
         async setEmail(): Promise<void> {
             try {
-                const hostURL = apiBaseUrl();
-                const response: AxiosResponse = await axios.post(
-                    hostURL + 'api/auth/users/set_email/',
-                    {
+                await apiClient<void>({
+                    url: 'api/auth/users/set_email/',
+                    method: 'POST',
+                    data: {
                         new_email: this.$state.setEmail.new_email,
                         re_new_email: this.$state.setEmail.re_new_email,
                         current_password: this.$state.setEmail.current_password,
                     },
-                    {
-                        headers: {
-                            Authorization: 'Token ' + this.token,
-                        },
-                    }
-                );
+                });
                 this.setEmailSuccessDialog = true;
-            } catch (error) {
-                const axiosError = error as AxiosError;
-                if (axiosError.response) {
-                    const errorData = axiosError.response.data as ErrorResponse;
-                    const errorMessage = errorData[Object.keys(errorData)[0]][0];
-                    processErrorResponse(axiosError.response.status, errorMessage);
-                }
             } finally {
                 this.$state.setEmail.current_password = '';
             }
