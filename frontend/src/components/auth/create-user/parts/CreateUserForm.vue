@@ -45,7 +45,7 @@
         </div>
         <br />
         <v-btn v-if="validationResult()" type="submit" @click="createUser()">会員登録する</v-btn>
-        <v-dialog v-model="authStore.$state.CreateUserSuccessDialog" max-width="400">
+        <v-dialog v-model="authStore.$state.dialog.CreateUserSuccess" max-width="400">
             <v-card>
                 <v-card-text>
                     <p>入力されたメールアドレスに会員登録の案内を送信しました</p>
@@ -107,7 +107,6 @@ export default defineComponent({
 
         /**
          * authStateからユーザー作成
-         * @
          */
         async function createUser(): Promise<void> {
             await authStore.createUser();
@@ -117,7 +116,7 @@ export default defineComponent({
          * 処理が正常に終了したらダイアログを閉じてTOPページへ遷移
          */
         function topPageMove(): void {
-            authStore.$state.CreateUserSuccessDialog = false;
+            authStore.$state.dialog.CreateUserSuccess = false;
             router.push('/');
         }
 

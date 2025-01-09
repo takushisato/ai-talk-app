@@ -38,14 +38,15 @@ export const useAuthStore = defineStore({
             re_new_email: '',
             current_password: '',
         },
-        // TODO ダイアログ関係は全て共通の状態管理を作成して、そちらに移動する。エラー分のスナックバーも移動する。
-        CreateUserSuccessDialog: false,
-        confirmPasswordFormDialog: false,
-        confirmSetPasswordDialog: false,
-        loginSuccessDialog: false,
-        resetPasswordSuccessDialog: false,
-        setPasswordSuccessDialog: false,
-        setEmailSuccessDialog: false,
+        dialog: {
+            CreateUserSuccess: false,
+            confirmPasswordForm: false,
+            // confirmSetPassword: false,
+            loginSuccess: false,
+            resetPasswordSuccess: false,
+            setPasswordSuccess: false,
+            setEmailSuccess: false,
+        },
     }),
     getters: {},
     actions: {
@@ -65,7 +66,7 @@ export const useAuthStore = defineStore({
                     method: 'POST',
                     data: postData,
                 });
-                this.CreateUserSuccessDialog = true;
+                this.dialog.CreateUserSuccess = true;
             } finally {
                 this.createForm.password = '';
                 this.createForm.re_password = '';
@@ -89,7 +90,7 @@ export const useAuthStore = defineStore({
                 this.token = response.auth_token;
                 useCookie('token', { secure: true, maxAge: 86400 }).value = this.token;
                 this.isAuthenticated = true;
-                this.loginSuccessDialog = true;
+                this.dialog.loginSuccess = true;
                 await this.updateUserAuthenticationStatus();
             } finally {
                 this.loginForm.password = '';
@@ -140,11 +141,14 @@ export const useAuthStore = defineStore({
                 method: 'POST',
                 data: { email: this.$state.resetForm.email },
             });
-            this.resetPasswordSuccessDialog = true;
+            this.dialog.resetPasswordSuccess = true;
         },
 
         /**
          * パスワード変更確認処理
+         *
+         * @param uid
+         * @param token
          */
         async resetPasswordConfirm(uid: string, token: string): Promise<void> {
             try {
@@ -157,7 +161,7 @@ export const useAuthStore = defineStore({
                         new_password: this.$state.confirmPasswordForm.new_password,
                     },
                 });
-                this.$state.confirmPasswordFormDialog = true;
+                this.$state.dialog.confirmPasswordForm = true;
             } finally {
                 this.$state.confirmPasswordForm.new_password = '';
                 this.$state.confirmPasswordForm.re_new_password = '';
@@ -179,7 +183,7 @@ export const useAuthStore = defineStore({
                         current_password: this.$state.setPasswordForm.current_password,
                     },
                 });
-                this.setPasswordSuccessDialog = true;
+                this.dialog.setPasswordSuccess = true;
             } finally {
                 this.$state.setPasswordForm.new_password = '';
                 this.$state.setPasswordForm.re_new_password = '';
@@ -201,7 +205,7 @@ export const useAuthStore = defineStore({
                         current_password: this.$state.setEmail.current_password,
                     },
                 });
-                this.setEmailSuccessDialog = true;
+                this.dialog.setEmailSuccess = true;
             } finally {
                 this.$state.setEmail.current_password = '';
             }

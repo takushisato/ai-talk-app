@@ -31,6 +31,8 @@ export const useAiTalkStore = defineStore({
     actions: {
         /**
          * スレッド内のAIとの過去のやり取りを取得します
+         *
+         * @param id
          */
         async fetchThreadTalks(id: string): Promise<void> {
             const data = await apiClient<TalkCollection>({
@@ -70,6 +72,8 @@ export const useAiTalkStore = defineStore({
 
         /**
          * 質問を投稿します
+         *
+         * @param id
          */
         async postQuestionToAI(id: string): Promise<void> {
             if (!this.postQuestion) return;
@@ -85,6 +89,8 @@ export const useAiTalkStore = defineStore({
 
         /**
          * AIとの会話を削除します
+         *
+         * @param id
          */
         async deleteTalk(id: number): Promise<void> {
             await apiClient({
@@ -97,6 +103,8 @@ export const useAiTalkStore = defineStore({
          * 画面上のtalksから要素をリアクティブに削除します
          *
          * TODO 動作確認
+         *
+         * @param key
          */
         deleteTalkObject(key: number): void {
             this.$state.talks.splice(key, 1);
@@ -106,6 +114,8 @@ export const useAiTalkStore = defineStore({
          * 画面内の要素と、backendの要素２つを同時に削除します
          *
          * TODO 動作確認
+         *
+         * @param id
          */
         deleteQuestionAndAnswer(id: number, key: number): void {
             this.deleteTalk(id);

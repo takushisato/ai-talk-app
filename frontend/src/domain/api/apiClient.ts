@@ -7,6 +7,8 @@ import type { ErrorResponse } from '~/domain/api/error-response';
  * Axiosラッパー関数
  *
  * TODO 共通の状態管理を使って、エラー表示のダイアログを埋め込む
+ *
+ * @param config
  */
 export const apiClient = async <T>(config: AxiosRequestConfig): Promise<T> => {
     try {
