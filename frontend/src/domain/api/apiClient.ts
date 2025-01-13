@@ -2,11 +2,10 @@ import axios from 'axios';
 import type { AxiosResponse, AxiosError, AxiosRequestConfig } from 'axios';
 import { apiBaseUrl } from '~/utils/api-base-url';
 import type { ErrorResponse } from '~/domain/api/error-response';
+import { useLayoutStore } from '~/composables/common/use-layout-store';
 
 /**
  * Axiosラッパー関数
- *
- * TODO 共通の状態管理を使って、エラー表示のダイアログを埋め込む
  *
  * @param config
  */
@@ -26,15 +25,15 @@ export const apiClient = async <T>(config: AxiosRequestConfig): Promise<T> => {
 
         return response.data;
     } catch (error) {
+        const layoutStore = useLayoutStore();
         const axiosError = error as AxiosError<ErrorResponse>;
         if (axiosError.response) {
-            const errorData = axiosError.response.data;
-            const errorMessage = Object.values(errorData)[0]?.[0] || 'An unknown error occurred.';
-            console.error(`API Error: ${errorMessage}`);
-            throw new Error(errorMessage);
+            const errorDetail = axiosError.response.data.detail;
+            layoutStore.error.errorMessage = errorDetail.join('\n') || 'An unknown error occurred.';
+            layoutStore.error.isError = true;
         } else {
-            console.error('Unknown error occurred:', error);
-            throw new Error('An unexpected error occurred.');
+            layoutStore.error.errorMessage = 'An error occurred during the API call.';
         }
+        throw new Error('An error occurred during the API call.');
     }
 };
